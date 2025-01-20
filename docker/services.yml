@@ -1,0 +1,10 @@
+name: active-mq-service
+services:
+  postgresql:
+    extends:
+      file: ./postgres.yml
+      service: postgresql
+  activemq:
+    extends:
+      file: ./active-mq.yml
+      service: activemq

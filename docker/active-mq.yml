@@ -1,0 +1,38 @@
+name: active-mq-service
+services:
+  activemq:
+    image: apache/activemq-artemis:latest
+    container_name: active-mq
+    environment:
+      # Security credentials
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
+
+      # Performance tuning
+      ACTIVEMQ_OPTS: "-Xms2g -Xmx3g"
+
+      # Configure instance
+      ARTEMIS_PERF_JOURNAL: 'AUTO'
+      ARTEMIS_MAX_DISK_USAGE: '90'
+
+    ports:
+      # ui
+      - "8161:8161"
+      # jms
+      - "61616:61616"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8161"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    restart: unless-stopped
+
+    deploy:
+      resources:
+        limits:
+          memory: 1GB
+        reservations:
+          memory: 512M
