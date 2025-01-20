@@ -5,91 +5,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861b1737-6a6d-4f62-bcf5-cbc702bb05d9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.fastRequest/config/fastRequestCurrentProjectEnvironment.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d2ba870e-b92b-44db-adc2-ddfa6d2c4ddb.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d2ba870e-b92b-44db-adc2-ddfa6d2c4ddb/storage_v2/_src_/database/active-mq.y5EvDA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d2ba870e-b92b-44db-adc2-ddfa6d2c4ddb/storage_v2/_src_/database/active-mq.y5EvDA/schema/information_schema.FNRwLQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d2ba870e-b92b-44db-adc2-ddfa6d2c4ddb/storage_v2/_src_/database/active-mq.y5EvDA/schema/pg_catalog.0S1ZNQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/d2ba870e-b92b-44db-adc2-ddfa6d2c4ddb/storage_v2/_src_/database/active-mq.y5EvDA/schema/public.abK9xQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/fastRequest/fastRequestCurrentProjectLocalConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/active-mq.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/postgres.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/services.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/ActiveMqApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/config/ActiveMQConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/config/JMSProperties.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/config/JacksonConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/core/converter/MapConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/core/model/BaseAuditingEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/core/model/BaseEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/core/model/BaseMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/core/model/IMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/core/service/BaseMessageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/exception/MessageProcessingException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/mapper/MessageAuditMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/model/dto/ExampleMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/model/entity/MessageAuditEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/model/enums/MessagePriority.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/model/enums/MessageStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/model/enums/MessageType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/resource/ExampleResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/respository/MessageAuditRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/ExampleMessageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/JMSRetryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/MessageAuditService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSDLQConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSQueueConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSTopicConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSQueueProducer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSTopicProducer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/utils/MessageUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/active_mq/ActiveMqApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/ActiveMqApplication.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/config/ActiveMQConfig.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/config/JacksonConfiguration.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/core/converter/MapConverter.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/BaseAuditingEntity.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/BaseEntity.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/BaseMessage.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/IMessage.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/core/service/BaseMessageService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/exception/MessageProcessingException.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/mapper/MessageAuditMapper.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/mapper/MessageAuditMapperImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/model/dto/ExampleMessage.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/model/entity/MessageAuditEntity.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/model/enums/MessagePriority.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/model/enums/MessageStatus.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/model/enums/MessageType.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/resource/ExampleResource.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/respository/MessageAuditRepository.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/ExampleMessageService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/JMSRetryService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/MessageAuditService.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/consumer/JMSDLQConsumer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/consumer/JMSTopicConsumer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/producer/JMSQueueProducer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/service/producer/JMSTopicProducer.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/active_mq/utils/MessageUtils.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/generated-sources/annotations/com/active_mq/mapper/MessageAuditMapperImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/test-classes/com/active_mq/ActiveMqApplicationTests.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/BaseJMSConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/abstrct/AbstractJMSProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/JMSRetryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/JMSRetryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSQueueConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSQueueConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSTopicConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSTopicConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSQueueProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSQueueProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSTopicProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSTopicProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/ActiveMqApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/config/ActiveMQConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/config/JacksonConfiguration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/core/converter/MapConverter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/BaseAuditingEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/BaseEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/BaseMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/core/model/IMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/core/service/BaseMessageService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/exception/MessageProcessingException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/mapper/MessageAuditMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/mapper/MessageAuditMapperImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/model/dto/ExampleMessage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/model/entity/MessageAuditEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/model/enums/MessagePriority.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/model/enums/MessageStatus.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/model/enums/MessageType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/resource/ExampleResource.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/respository/MessageAuditRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/ExampleMessageService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/JMSRetryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/MessageAuditService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/consumer/JMSDLQConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/consumer/JMSTopicConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/producer/JMSQueueProducer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/service/producer/JMSTopicProducer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/utils/MessageUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/com/active_mq/mapper/MessageAuditMapperImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/active_mq/ActiveMqApplicationTests.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,11 +196,24 @@
       <workItem from="1737217528831" duration="83000" />
       <workItem from="1737218085906" duration="1809000" />
       <workItem from="1737219929527" duration="127000" />
-      <workItem from="1737221090739" duration="41082000" />
+      <workItem from="1737221090739" duration="44170000" />
     </task>
+    <task id="LOCAL-00001" summary="first commit">
+      <option name="closed" value="true" />
+      <created>1737401620429</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737401620429</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
   </component>
 </project>

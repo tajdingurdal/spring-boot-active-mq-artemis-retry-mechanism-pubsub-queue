@@ -20,14 +20,14 @@ public class JMSRetryService {
 
     private final JMSProperties jmsProperties;
     private final MessageAuditService auditService;
-    private final JMSQueueProducer producer;
+    private final JMSQueueProducer queueProducer;
 
     private final Map<String, AtomicInteger> retryCountMap = new ConcurrentHashMap<>();
 
-    public JMSRetryService(MessageAuditService messageAuditService, JMSProperties jmsProperties, JMSQueueProducer producer) {
+    public JMSRetryService(MessageAuditService messageAuditService, JMSProperties jmsProperties, JMSQueueProducer queueProducer) {
         this.auditService = messageAuditService;
         this.jmsProperties = jmsProperties;
-        this.producer = producer;
+        this.queueProducer = queueProducer;
     }
 
     public void handleProcessingError(final BaseMessage baseMessage) {
@@ -46,7 +46,7 @@ public class JMSRetryService {
         AtomicInteger retryCount = getRedeliveryCountFromMap(messageId);
         try {
             long delay = calculateRetryDelay(retryCount.get());
-            producer.convertAndSendDelayMessage(message, message.getDestination(), delay);
+            queueProducer.sendDelayedMessage(message, message.getDestination(), delay);
             auditService.updateStatusByMessageId(messageId, MessageStatus.RETRYING);
             retryCount.incrementAndGet();
             log.info("Scheduled retry for message {} with delay {} ms, attempt {}", messageId, delay, retryCount.get());
@@ -73,7 +73,7 @@ public class JMSRetryService {
         String messageId = baseMessage.getMessageId();
         try {
             auditService.updateStatusByMessageId(messageId, MessageStatus.DLQ);
-            producer.convertAndSend(baseMessage, jmsProperties.getDeadLetterQueue());
+            queueProducer.convertAndSend(baseMessage, jmsProperties.getDeadLetterQueue());
             log.warn("Message {} moved to DLQ", messageId);
         } catch (Exception e) {
             log.error("Failed to move message {} to DLQ", messageId, e);
