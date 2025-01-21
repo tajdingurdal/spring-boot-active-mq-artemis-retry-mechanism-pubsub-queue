@@ -1,10 +1,10 @@
 package com.active_mq.config.jms;
 
 import com.active_mq.config.JMSProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
@@ -17,9 +17,11 @@ import java.util.List;
 @EnableJms
 public class CommonActiveMQConfig {
 
+    private final Jackson2ObjectMapperBuilder mapperBuilder;
     private final JMSProperties jmsProperties;
 
-    public CommonActiveMQConfig(JMSProperties jmsProperties) {
+    public CommonActiveMQConfig(Jackson2ObjectMapperBuilder mapperBuilder, JMSProperties jmsProperties) {
+        this.mapperBuilder = mapperBuilder;
         this.jmsProperties = jmsProperties;
     }
 
@@ -47,7 +49,8 @@ public class CommonActiveMQConfig {
     public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
         converter.setTargetType(MessageType.BYTES);
-        converter.setObjectMapper(new ObjectMapper());
+        converter.setTypeIdPropertyName("_type");
+        converter.setObjectMapper(mapperBuilder.build());
         return converter;
     }
 }

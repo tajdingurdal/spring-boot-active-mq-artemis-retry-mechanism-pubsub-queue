@@ -22,7 +22,7 @@ public class JMSDLQConsumer {
         this.auditService = auditService;
     }
 
-    @JmsListener(destination = "${spring.activemq.queue.dead-letter-queue}")
+    @JmsListener(destination = "${spring.activemq.destination.dead-letter-queue}")
     public void processDLQMessage(final Message message) throws JMSException {
         BaseMessage baseMessage = (BaseMessage) ((ObjectMessage) message).getObject();
         log.warn("Message {} received in DLQ", baseMessage.getMessageId());

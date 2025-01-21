@@ -23,7 +23,8 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
         this.jmsRetryService = jmsRetryService;
     }
 
-    @JmsListener(destination = "${spring.activemq.queue.message.name}")
+    @JmsListener(destination = "${spring.activemq.destination.message-queue}",
+            containerFactory = "jmsQueueListenerContainerFactory")
     @Async
     public <T extends BaseMessage> void receiveMessage(final BaseMessage baseMessage) throws MessageProcessingException, JMSException {
         String messageId = baseMessage.getMessageId();
@@ -39,7 +40,7 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
         }
     }
 
-    @JmsListener(destination = "${spring.activemq.queue.expiry-queue}")
+    @JmsListener(destination = "${spring.activemq.destination.expiry-queue}")
     @Async
     public <T extends BaseMessage> void receivedExpiryMessage(final BaseMessage baseMessage) throws MessageProcessingException {
         auditService.persist(baseMessage, MessageStatus.EXPIRED);

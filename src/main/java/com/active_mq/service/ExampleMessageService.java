@@ -21,17 +21,17 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
 
     private final JMSProperties jmsProperties;
 
-    private final JMSQueueProducer JMSQueueProducer;
+    private final JMSQueueProducer jmsQueueProducer;
 
-    public ExampleMessageService(JMSProperties jmsProperties, JMSQueueProducer JMSQueueProducer) {
+    public ExampleMessageService(JMSProperties jmsProperties, JMSQueueProducer jmsQueueProducer) {
         this.jmsProperties = jmsProperties;
-        this.JMSQueueProducer = JMSQueueProducer;
+        this.jmsQueueProducer = jmsQueueProducer;
     }
 
     public void publishMessage(String msg) {
         ExampleMessage exampleMessage = generateMessage();
         exampleMessage.setContent(msg);
-        JMSQueueProducer.sendMessage(exampleMessage);
+        jmsQueueProducer.sendMessage(exampleMessage);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
         message.setMessageId(MessageUtils.createMessageId(new Date()));
         message.setSender(ExampleMessageService.class.getSimpleName());
         message.setRecipient(getType());
-        message.setDestination(jmsProperties.getMessageQueue());
+        message.setDestination(jmsProperties.getDestination().messageQueue());
         message.setPriority(MessagePriority.DEFAULT);
         message.setMessageType(MessageType.SYSTEM);
         message.setExpirationDate(MessageUtils.defaultExpirationDate());

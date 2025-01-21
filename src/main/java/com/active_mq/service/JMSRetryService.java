@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -89,7 +89,7 @@ public class JMSRetryService {
             return false;
         }
 
-        if (message.getExpirationDate() != null && LocalDateTime.now().isAfter(message.getExpirationDate())) {
+        if (message.getExpirationDate() != null && Instant.now().isAfter(message.getExpirationDate())) {
             log.warn("Message {} has expired at {}", message.getMessageId(), message.getExpirationDate());
             return false;
         }

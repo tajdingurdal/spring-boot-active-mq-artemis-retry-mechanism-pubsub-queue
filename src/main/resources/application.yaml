@@ -6,15 +6,13 @@ spring:
     password: admin
     user: admin
     message-expire-time: 3600000 # 1 hour
-    topic:
-      message:
-        name: message.topic
-    queue:
+    destination:
       expiry-queue: ExpiryQueue
       dead-letter-queue: ActiveMQ.DLQ
       group-queue: group.queue
-      message:
-        name: message.queue
+      message-queue: message.queue
+
+      message-topic: message.topic
     redelivery:
       max-attempts: 3
       initial-interval: 1000

@@ -15,20 +15,20 @@ public class JMSProperties {
     private Integer messageExpireTime;
     private String deadLetterQueue;
     private Redelivery redelivery;
-    private String messageQueue;
+    private Destination destination;
     private String messageTopic;
 
     public JMSProperties() {
     }
 
-    public JMSProperties(String username, String password, String brokerUrl, Integer messageExpireTime, String deadLetterQueue, Redelivery redelivery, String messageQueue, String messageTopic) {
+    public JMSProperties(String username, String password, String brokerUrl, Integer messageExpireTime, String deadLetterQueue, Redelivery redelivery, Destination destination, String messageTopic) {
         this.username = username;
         this.password = password;
         this.brokerUrl = brokerUrl;
         this.messageExpireTime = messageExpireTime;
         this.deadLetterQueue = deadLetterQueue;
         this.redelivery = redelivery;
-        this.messageQueue = messageQueue;
+        this.destination = destination;
         this.messageTopic = messageTopic;
     }
 
@@ -72,12 +72,12 @@ public class JMSProperties {
         this.deadLetterQueue = deadLetterQueue;
     }
 
-    public String getMessageQueue() {
-        return messageQueue;
+    public Destination getDestination() {
+        return destination;
     }
 
-    public void setMessageQueue(String messageQueue) {
-        this.messageQueue = messageQueue;
+    public void setDestination(Destination destination) {
+        this.destination = destination;
     }
 
     public String getMessageTopic() {
@@ -97,6 +97,14 @@ public class JMSProperties {
     }
 
     public record Redelivery(int maxAttempts, int initialInterval, int multiplier, int maxInterval) {
+
+    }
+
+    public record Destination(String expiryQueue,
+                              String deadLetterQueue,
+                              String groupQueue,
+                              String messageQueue,
+                              String messageTopic) {
 
     }
 }

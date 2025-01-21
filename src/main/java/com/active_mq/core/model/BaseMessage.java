@@ -5,7 +5,7 @@ import com.active_mq.model.enums.MessageType;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Component
 public class BaseMessage implements IMessage, Serializable {
@@ -16,7 +16,7 @@ public class BaseMessage implements IMessage, Serializable {
     private String content;
     private MessagePriority priority;
     private MessageType messageType;
-    private LocalDateTime expirationDate;
+    private Instant expirationDate;
 
     public BaseMessage() {
     }
@@ -77,11 +77,11 @@ public class BaseMessage implements IMessage, Serializable {
         this.messageType = messageType;
     }
 
-    public LocalDateTime getExpirationDate() {
+    public Instant getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
+    public void setExpirationDate(Instant expirationDate) {
         this.expirationDate = expirationDate;
     }
 

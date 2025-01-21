@@ -20,7 +20,7 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
     }
 
     @JmsListener(
-            destination = "${spring.activemq.topic.message.name}",
+            destination = "${spring.activemq.destination.message-topic}",
             containerFactory = "jmsSubscriberListenerContainerFactory",
             subscription = "default-topic-subscription"
     )

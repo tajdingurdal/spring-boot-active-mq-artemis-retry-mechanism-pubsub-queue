@@ -1,7 +1,9 @@
 package com.active_mq.utils;
 
+import org.hibernate.query.sqm.TemporalUnit;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Random;
 
@@ -18,7 +20,7 @@ public class MessageUtils {
         return format.concat(mark);
     }
 
-    public static LocalDateTime defaultExpirationDate(){
-        return LocalDateTime.now().plusHours(1);
+    public static Instant defaultExpirationDate(){
+        return Instant.now().plusSeconds(3600);
     }
 }
