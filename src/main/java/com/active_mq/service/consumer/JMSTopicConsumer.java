@@ -21,7 +21,7 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
 
     @JmsListener(
             destination = "${spring.activemq.topic.message.name}",
-            containerFactory = "jmsTopicListenerContainerFactory",
+            containerFactory = "jmsSubscriberListenerContainerFactory",
             subscription = "exampleSubscription"
     )
     @Async
