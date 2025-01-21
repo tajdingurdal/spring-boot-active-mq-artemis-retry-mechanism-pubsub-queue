@@ -22,7 +22,7 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
     @JmsListener(
             destination = "${spring.activemq.topic.message.name}",
             containerFactory = "jmsSubscriberListenerContainerFactory",
-            subscription = "exampleSubscription"
+            subscription = "default-topic-subscription"
     )
     @Async
     public <T extends BaseMessage> void receiveMessage(final BaseMessage baseMessage) throws MessageProcessingException {

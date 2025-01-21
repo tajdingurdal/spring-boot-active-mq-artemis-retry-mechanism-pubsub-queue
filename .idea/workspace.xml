@@ -5,14 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="861b1737-6a6d-4f62-bcf5-cbc702bb05d9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/docker/create-destinations.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/config/jms/QueueConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/config/jms/SubscriberConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker/active-mq.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker/active-mq.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/config/ActiveMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/config/jms/CommonActiveMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/create-destinations.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/BaseJMSConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/BaseJMSConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSQueueConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSQueueConsumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSTopicConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/consumer/JMSTopicConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSQueueProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSQueueProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSTopicProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/JMSTopicProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/abstrct/AbstractJMSProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/active_mq/service/producer/abstrct/BaseJMSProducer.java" afterDir="false" />
+    </list>
+    <list id="404f61fd-5940-4970-a4a1-918bdf14a495" name="ignore" comment="">
       <change beforePath="$PROJECT_DIR$/target/classes/application.yaml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/ActiveMqApplication.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/active_mq/config/ActiveMQConfig.class" beforeDir="false" />
@@ -48,6 +51,11 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -106,7 +114,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.pluginManager",
@@ -187,6 +195,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="861b1737-6a6d-4f62-bcf5-cbc702bb05d9" name="Changes" comment="" />
+      <changelist id="404f61fd-5940-4970-a4a1-918bdf14a495" name="ignore" comment="" />
       <created>1736932407273</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -199,7 +208,7 @@
       <workItem from="1737217528831" duration="83000" />
       <workItem from="1737218085906" duration="1809000" />
       <workItem from="1737219929527" duration="127000" />
-      <workItem from="1737221090739" duration="50525000" />
+      <workItem from="1737221090739" duration="53443000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -217,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737404677989</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="code optimized">
+      <option name="closed" value="true" />
+      <created>1737454120250</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1737454120250</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

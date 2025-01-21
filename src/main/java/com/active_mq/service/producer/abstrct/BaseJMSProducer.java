@@ -9,28 +9,38 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.Async;
 
+import javax.jms.Message;
+
 /**
  * Abstract base class for JMS message producers
  */
-public abstract class AbstractJMSProducer {
+public abstract class BaseJMSProducer {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
     protected final JmsTemplate jmsTemplate;
     protected final MessageAuditService auditService;
 
-    protected AbstractJMSProducer(JmsTemplate jmsTemplate, MessageAuditService auditService) {
+    protected BaseJMSProducer(JmsTemplate jmsTemplate, MessageAuditService auditService) {
         this.jmsTemplate = jmsTemplate;
         this.auditService = auditService;
     }
 
-    protected abstract MessageStatus getSuccessStatus();
-
-    protected abstract <T extends BaseMessage> void doSend(T message, String destination);
+    protected abstract MessageStatus getType();
 
     @Async
     public <T extends BaseMessage> void sendMessage(final T message) {
         validateMessage(message);
         convertAndSend(message, message.getDestination());
+    }
+
+    @Async
+    public <T extends BaseMessage> void convertAndSend(final T message, final String destination) {
+        try {
+            jmsTemplate.convertAndSend(destination, message);
+            logSuccessAndAudit(message);
+        } catch (Exception e) {
+            handleSendError(message, e);
+        }
     }
 
     @Async
@@ -40,25 +50,15 @@ public abstract class AbstractJMSProducer {
     }
 
     @Async
-    public <T extends BaseMessage> void convertAndSend(final T message, final String destination) {
-        try {
-            doSend(message, destination);
-            logSuccessAndAudit(message);
-        } catch (Exception e) {
-            handleSendError(message, e);
-        }
-    }
-
-    @Async
     public <T extends BaseMessage> void convertAndSendWithPriority(final T message, final String destination, final int priority) {
         try {
             jmsTemplate.setPriority(priority);
-            doSend(message, destination);
+            convertAndSend(message, destination);
             logSuccessAndAudit(message);
         } catch (Exception e) {
             handleSendError(message, e);
         } finally {
-            jmsTemplate.setPriority(-1);
+            jmsTemplate.setPriority(Message.DEFAULT_PRIORITY);
         }
     }
 
@@ -66,12 +66,12 @@ public abstract class AbstractJMSProducer {
     public <T extends BaseMessage> void sendDelayedMessage(final T message, final String destination, final long deliveryDelay) {
         try {
             jmsTemplate.setDeliveryDelay(deliveryDelay);
-            doSend(message, destination);
+            convertAndSend(message, destination);
             logSuccessAndAudit(message);
         } catch (Exception e) {
             handleSendError(message, e);
         } finally {
-            jmsTemplate.setDeliveryDelay(-1);
+            jmsTemplate.setDeliveryDelay(Message.DEFAULT_DELIVERY_DELAY);
         }
     }
 
@@ -86,7 +86,7 @@ public abstract class AbstractJMSProducer {
 
     protected <T extends BaseMessage> void logSuccessAndAudit(T message) {
         log.info("Message sent successfully with ID: {} to destination: {}", message.getMessageId(), message.getDestination());
-        auditService.persist(message, getSuccessStatus());
+        auditService.persist(message, getType());
     }
 
     protected <T extends BaseMessage> void handleSendError(T message, Exception e) {

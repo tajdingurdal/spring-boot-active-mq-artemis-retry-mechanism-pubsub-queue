@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
 import java.util.List;
 
 @Service
@@ -26,8 +25,7 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
 
     @JmsListener(destination = "${spring.activemq.queue.message.name}")
     @Async
-    public <T extends BaseMessage> void receiveMessage(final Message message) throws MessageProcessingException, JMSException {
-        BaseMessage baseMessage = extractMessage(message);
+    public <T extends BaseMessage> void receiveMessage(final BaseMessage baseMessage) throws MessageProcessingException, JMSException {
         String messageId = baseMessage.getMessageId();
         log.info("Processing queue message: {}", messageId);
 
