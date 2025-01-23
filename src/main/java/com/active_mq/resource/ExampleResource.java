@@ -16,10 +16,20 @@ public class ExampleResource {
         this.exampleMessageService = exampleMessageService;
     }
 
-    @GetMapping("/publish-message")
-    public ResponseEntity<String> publishMessage(@RequestParam final String msg) {
+    @GetMapping("/queue-publish-message")
+    public ResponseEntity<String> queuePublishMessage(@RequestParam final String msg) {
         try {
-            exampleMessageService.publishMessage(msg);
+            exampleMessageService.queuePublishMessage(msg);
+            return new ResponseEntity<>("Sent.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/topic-publish-message")
+    public ResponseEntity<String> topicPublishMessage(@RequestParam final String msg) {
+        try {
+            exampleMessageService.topicPublishMessage(msg);
             return new ResponseEntity<>("Sent.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

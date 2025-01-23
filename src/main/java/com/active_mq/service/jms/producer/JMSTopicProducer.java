@@ -1,21 +1,21 @@
-package com.active_mq.service.producer;
+package com.active_mq.service.jms.producer;
 
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
-import com.active_mq.service.producer.abstrct.BaseJMSProducer;
+import com.active_mq.service.jms.producer.abstrct.BaseJMSProducer;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class JMSDLQProducer extends BaseJMSProducer {
+public class JMSTopicProducer extends BaseJMSProducer {
 
-    public JMSDLQProducer(JmsTemplate jmsTemplate, MessageAuditService auditService) {
+    public JMSTopicProducer(JmsTemplate jmsTemplate, MessageAuditService auditService) {
         super(jmsTemplate, auditService);
     }
 
     @Override
     protected MessageStatus getType() {
-        return MessageStatus.DLQ;
+        return MessageStatus.TOPIC;
     }
 }

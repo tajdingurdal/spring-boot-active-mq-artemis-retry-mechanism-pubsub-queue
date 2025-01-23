@@ -1,4 +1,4 @@
-package com.active_mq.service.consumer;
+package com.active_mq.service.jms.consumer;
 
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.model.enums.MessageStatus;
@@ -22,7 +22,8 @@ public class JMSDLQConsumer {
         this.auditService = auditService;
     }
 
-    @JmsListener(destination = "${spring.activemq.destination.dead-letter-queue}")
+    @JmsListener(destination = "${spring.activemq.destination.dead-letter-queue}",
+            containerFactory = "dlqJmsListenerContainerFactory")
     public void processDLQMessage(final Message message) throws JMSException {
         BaseMessage baseMessage = (BaseMessage) ((ObjectMessage) message).getObject();
         log.warn("Message {} received in DLQ", baseMessage.getMessageId());

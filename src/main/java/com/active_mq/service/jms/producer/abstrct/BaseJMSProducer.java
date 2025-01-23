@@ -1,4 +1,4 @@
-package com.active_mq.service.producer.abstrct;
+package com.active_mq.service.jms.producer.abstrct;
 
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.exception.MessageProcessingException;

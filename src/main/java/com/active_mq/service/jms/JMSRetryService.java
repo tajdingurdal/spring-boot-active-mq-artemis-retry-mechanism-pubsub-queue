@@ -1,9 +1,11 @@
-package com.active_mq.service;
+package com.active_mq.service.jms;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.service.producer.JMSQueueProducer;
+import com.active_mq.service.MessageAuditService;
+import com.active_mq.service.RedeliveryCountManager;
+import com.active_mq.service.jms.producer.JMSQueueProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

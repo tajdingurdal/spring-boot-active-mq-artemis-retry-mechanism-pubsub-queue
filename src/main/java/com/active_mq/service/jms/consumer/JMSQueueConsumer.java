@@ -1,10 +1,10 @@
-package com.active_mq.service.consumer;
+package com.active_mq.service.jms.consumer;
 
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.core.service.BaseMessageService;
 import com.active_mq.exception.MessageProcessingException;
 import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.service.JMSRetryService;
+import com.active_mq.service.jms.JMSRetryService;
 import com.active_mq.service.MessageAuditService;
 import com.active_mq.service.RedeliveryCountManager;
 import org.springframework.jms.annotation.JmsListener;
@@ -41,12 +41,5 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
             log.info("Error processing queue message: {}", messageId);
             jmsRetryService.handleProcessingError(baseMessage);
         }
-    }
-
-    @JmsListener(destination = "${spring.activemq.destination.expiry-queue}")
-    @Async
-    public <T extends BaseMessage> void receivedExpiryMessage(final BaseMessage baseMessage) throws MessageProcessingException {
-        auditService.persist(baseMessage, MessageStatus.EXPIRED);
-        log.info("Processed expired message: {}", baseMessage.getMessageId());
     }
 }

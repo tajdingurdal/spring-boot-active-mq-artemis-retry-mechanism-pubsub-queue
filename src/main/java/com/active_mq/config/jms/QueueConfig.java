@@ -8,7 +8,6 @@ import org.springframework.jms.support.converter.MessageConverter;
 
 import java.util.Random;
 import java.util.UUID;
-import java.util.random.RandomGenerator;
 
 @Configuration
 public class QueueConfig {
@@ -24,10 +23,24 @@ public class QueueConfig {
 
     @Bean
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+        return createJmsListenerContainerFactory("queue");
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory dlqJmsListenerContainerFactory() {
+        return createJmsListenerContainerFactory("queue-dlq");
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory expiryJmsListenerContainerFactory() {
+        return createJmsListenerContainerFactory("queue-expiry");
+    }
+
+    public DefaultJmsListenerContainerFactory createJmsListenerContainerFactory(String type) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter);
-        factory.setClientId(String.format("queue-%o-%o-%s", new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
+        factory.setClientId(String.format("%s-%o-%o-%s", type, new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
         factory.setAutoStartup(true);
         factory.setConcurrency("1-10");
         factory.setErrorHandler(t -> {

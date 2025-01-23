@@ -1,4 +1,4 @@
-package com.active_mq.service.consumer;
+package com.active_mq.service.jms.consumer;
 
 import com.active_mq.core.service.BaseMessageService;
 import com.active_mq.service.MessageAuditService;

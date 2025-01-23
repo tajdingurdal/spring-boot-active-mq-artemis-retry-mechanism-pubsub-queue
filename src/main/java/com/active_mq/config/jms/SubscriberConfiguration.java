@@ -25,7 +25,7 @@ public class SubscriberConfiguration {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter);
-        factory.setClientId(String.format("queue-%o-%o-%s", new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
+        factory.setClientId(String.format("topic-subscriber-%o-%o-%s", new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
         factory.setAutoStartup(true);
         factory.setPubSubDomain(true);
         factory.setSubscriptionDurable(true);
