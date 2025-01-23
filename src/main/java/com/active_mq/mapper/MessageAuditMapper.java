@@ -5,11 +5,13 @@ import com.active_mq.model.entity.MessageAuditEntity;
 import com.active_mq.model.enums.MessageStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.Map;
 
 @Mapper(componentModel = "spring")
+@Component
 public abstract class MessageAuditMapper {
 
     public MessageAuditEntity toEntity(BaseMessage baseMessage, MessageStatus status) throws JsonProcessingException {

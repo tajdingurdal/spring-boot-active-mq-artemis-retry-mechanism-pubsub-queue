@@ -54,7 +54,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
 
     @Override
     public String getType() {
-        return ExampleMessageService.class.getSimpleName();
+        return this.getClass().getSimpleName();
     }
 
 

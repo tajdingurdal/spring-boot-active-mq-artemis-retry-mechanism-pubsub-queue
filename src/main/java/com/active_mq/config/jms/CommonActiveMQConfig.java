@@ -2,6 +2,8 @@ package com.active_mq.config.jms;
 
 import com.active_mq.config.JMSProperties;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQPrefetchPolicy;
+import org.apache.activemq.jms.pool.PooledConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -33,8 +35,22 @@ public class CommonActiveMQConfig {
         factory.setPassword(jmsProperties.getPassword());
         factory.setTrustAllPackages(false);
         factory.setTrustedPackages(List.of("com.active_mq.model"));
+
+
+        ActiveMQPrefetchPolicy activeMQPrefetchPolicy = new ActiveMQPrefetchPolicy();
+        activeMQPrefetchPolicy.setQueuePrefetch(100);
+        factory.setPrefetchPolicy(activeMQPrefetchPolicy);
+
         return factory;
     }
+
+//    @Bean
+//    public PooledConnectionFactory pooledConnectionFactory() {
+//        PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory();
+//        pooledConnectionFactory.setConnectionFactory(connectionFactory());
+//        pooledConnectionFactory.setMaxConnections(10);
+//        return pooledConnectionFactory;
+//    }
 
     @Bean
     public JmsTemplate jmsTemplate() {

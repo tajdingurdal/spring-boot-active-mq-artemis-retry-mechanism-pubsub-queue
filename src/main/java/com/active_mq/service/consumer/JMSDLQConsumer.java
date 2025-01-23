@@ -28,7 +28,7 @@ public class JMSDLQConsumer {
         log.warn("Message {} received in DLQ", baseMessage.getMessageId());
         // notify somewhere....
 
-        auditService.persist(baseMessage, MessageStatus.FAILED);
+        auditService.persist(baseMessage, MessageStatus.HANDLED_AT_DLQ_AND_FAILED);
     }
 
 }

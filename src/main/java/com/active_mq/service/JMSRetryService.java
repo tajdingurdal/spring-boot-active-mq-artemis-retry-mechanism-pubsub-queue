@@ -9,9 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class JMSRetryService {
@@ -21,38 +18,40 @@ public class JMSRetryService {
     private final JMSProperties jmsProperties;
     private final MessageAuditService auditService;
     private final JMSQueueProducer queueProducer;
+    private final JMSDLQService dlqService;
+    private final RedeliveryCountManager redeliveryCountManager;
 
-    private final Map<String, AtomicInteger> retryCountMap = new ConcurrentHashMap<>();
-
-    public JMSRetryService(MessageAuditService messageAuditService, JMSProperties jmsProperties, JMSQueueProducer queueProducer) {
+    public JMSRetryService(MessageAuditService messageAuditService, JMSProperties jmsProperties, JMSQueueProducer queueProducer, JMSDLQService dlqService, RedeliveryCountManager redeliveryCountManager) {
         this.auditService = messageAuditService;
         this.jmsProperties = jmsProperties;
         this.queueProducer = queueProducer;
+        this.dlqService = dlqService;
+        this.redeliveryCountManager = redeliveryCountManager;
     }
 
     public void handleProcessingError(final BaseMessage baseMessage) {
         String messageId = baseMessage.getMessageId();
-        int redeliveryCount = getRedeliveryCountFromMap(messageId).get();
+        int redeliveryCount = redeliveryCountManager.getRedeliveryCountFromMap(messageId).get();
         log.error("Error processing message {} attempt: {}", messageId, redeliveryCount);
         if (shouldRetryMessage(baseMessage, redeliveryCount)) {
             handleRetry(baseMessage);
         } else {
-            handleDeadLetter(baseMessage);
+            dlqService.handleDeadLetter(baseMessage);
         }
     }
 
     public void handleRetry(BaseMessage message) {
         String messageId = message.getMessageId();
-        AtomicInteger retryCount = getRedeliveryCountFromMap(messageId);
         try {
-            long delay = calculateRetryDelay(retryCount.get());
+            int countAsInt = redeliveryCountManager.getRedeliveryCountAsInt(messageId);
+            long delay = calculateRetryDelay(countAsInt);
             queueProducer.sendDelayedMessage(message, message.getDestination(), delay);
             auditService.updateStatusByMessageId(messageId, MessageStatus.RETRYING);
-            retryCount.incrementAndGet();
-            log.info("Scheduled retry for message {} with delay {} ms, attempt {}", messageId, delay, retryCount.get());
+            redeliveryCountManager.incrementRedeliveryCount(messageId);
+            log.info("Scheduled retry for message {} with delay {} ms, attempt {}", messageId, delay, countAsInt);
         } catch (Exception e) {
             log.error("Failed to handle retry for message: {}", messageId, e);
-            handleDeadLetter(message);
+            dlqService.handleDeadLetter(message);
         }
     }
 
@@ -69,19 +68,6 @@ public class JMSRetryService {
         }
     }
 
-    public void handleDeadLetter(BaseMessage baseMessage) {
-        String messageId = baseMessage.getMessageId();
-        try {
-            auditService.updateStatusByMessageId(messageId, MessageStatus.DLQ);
-            queueProducer.convertAndSend(baseMessage, jmsProperties.getDeadLetterQueue());
-            log.warn("Message {} moved to DLQ", messageId);
-        } catch (Exception e) {
-            log.error("Failed to move message {} to DLQ", messageId, e);
-        } finally {
-            retryCountMap.remove(messageId);
-        }
-    }
-
     private boolean shouldRetryMessage(BaseMessage message, final int redeliveryCount) {
 
         if (redeliveryCount >= jmsProperties.getRedelivery().maxAttempts()) {
@@ -95,17 +81,5 @@ public class JMSRetryService {
         }
 
         return true;
-    }
-
-    public Map<String, AtomicInteger> getRetryCountMap() {
-        return retryCountMap;
-    }
-
-    public void removeRedeliveryCountFromMap(String messageId) {
-        getRetryCountMap().remove(messageId);
-    }
-
-    public AtomicInteger getRedeliveryCountFromMap(String messageId) {
-        return getRetryCountMap().computeIfAbsent(messageId, k -> new AtomicInteger(0));
     }
 }

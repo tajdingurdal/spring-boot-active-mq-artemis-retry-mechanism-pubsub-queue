@@ -38,5 +38,13 @@ public class MessageAuditService {
         repository.updateStatusByMessageId(messageId, status);
     }
 
+    @Transactional
+    public MessageAuditEntity getOneOrFail(String messageId) {
+        if (messageId == null) {
+            return null;
+        }
+        return repository.findByMessageId(messageId).orElseThrow();
+    }
+
 
 }

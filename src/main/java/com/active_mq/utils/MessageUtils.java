@@ -1,7 +1,5 @@
 package com.active_mq.utils;
 
-import org.hibernate.query.sqm.TemporalUnit;
-
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;

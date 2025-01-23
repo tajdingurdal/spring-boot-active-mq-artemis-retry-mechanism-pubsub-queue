@@ -13,6 +13,6 @@ public enum MessageStatus {
     DLQ,
     EXPIRED,
     RETRYING,
-    ;
+    HANDLED_AT_DLQ_AND_FAILED;
 
 }

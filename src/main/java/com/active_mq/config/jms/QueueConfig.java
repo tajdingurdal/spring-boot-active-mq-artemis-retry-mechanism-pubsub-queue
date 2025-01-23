@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MessageConverter;
 
+import java.util.Random;
+import java.util.UUID;
+import java.util.random.RandomGenerator;
+
 @Configuration
 public class QueueConfig {
 
@@ -19,11 +23,11 @@ public class QueueConfig {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory jmsQueueListenerContainerFactory() {
+    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter);
-        factory.setClientId("unique-queue-listener-client-id");
+        factory.setClientId(String.format("queue-%o-%o-%s", new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
         factory.setAutoStartup(true);
         factory.setConcurrency("1-10");
         factory.setErrorHandler(t -> {

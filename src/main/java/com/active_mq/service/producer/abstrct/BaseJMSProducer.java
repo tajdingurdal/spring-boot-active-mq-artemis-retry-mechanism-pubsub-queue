@@ -4,6 +4,7 @@ import com.active_mq.core.model.BaseMessage;
 import com.active_mq.exception.MessageProcessingException;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
+import org.apache.activemq.ScheduledMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -65,13 +66,15 @@ public abstract class BaseJMSProducer {
     @Async
     public <T extends BaseMessage> void sendDelayedMessage(final T message, final String destination, final long deliveryDelay) {
         try {
-            jmsTemplate.setDeliveryDelay(deliveryDelay);
-            convertAndSend(message, destination);
+            jmsTemplate.convertAndSend(destination, message, postProcessor -> {
+                postProcessor.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, deliveryDelay);
+                return postProcessor;
+            });
             logSuccessAndAudit(message);
         } catch (Exception e) {
             handleSendError(message, e);
         } finally {
-            jmsTemplate.setDeliveryDelay(Message.DEFAULT_DELIVERY_DELAY);
+            jmsTemplate.setDeliveryDelay(0);
         }
     }
 

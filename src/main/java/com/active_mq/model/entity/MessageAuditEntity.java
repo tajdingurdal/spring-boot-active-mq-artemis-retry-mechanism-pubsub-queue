@@ -5,9 +5,9 @@ import com.active_mq.core.model.BaseEntity;
 import com.active_mq.model.enums.MessagePriority;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.model.enums.MessageType;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
-import com.vladmihalcea.hibernate.type.json.JsonType;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Table(name = "message_audit")
 public class MessageAuditEntity extends BaseEntity implements Serializable {
 
-    @Column(nullable = false)
+    @Column(name = "message_id", nullable = false)
     private String messageId;
 
     @Column(nullable = false)
@@ -26,16 +26,19 @@ public class MessageAuditEntity extends BaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
+    @Column(name = "sender", nullable = false)
     private String sender;
 
+    @Column(name = "recipient", nullable = false)
     private String recipient;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "message_content", columnDefinition = "TEXT")
     private String messageContent;
 
     @Enumerated(EnumType.STRING)
     private MessagePriority priority;
 
+    @Column(name = "error_message")
     private String errorMessage;
 
     @Column(name = "meta_data", columnDefinition = "json")

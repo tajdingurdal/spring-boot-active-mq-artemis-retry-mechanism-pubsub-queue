@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MessageAuditRepository extends JpaRepository<MessageAuditEntity, Long> {
 
@@ -15,4 +17,6 @@ public interface MessageAuditRepository extends JpaRepository<MessageAuditEntity
     @Modifying
     @Query("UPDATE MessageAuditEntity ma SET ma.status =:status WHERE ma.messageId =:messageId")
     void updateStatusByMessageId(@Param("messageId") String messageId, @Param("status") MessageStatus status);
+
+    Optional<MessageAuditEntity> findByMessageId(String messageId);
 }

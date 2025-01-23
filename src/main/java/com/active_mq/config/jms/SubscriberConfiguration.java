@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MessageConverter;
 
+import java.util.Random;
+import java.util.UUID;
+
 @Configuration
 public class SubscriberConfiguration {
 
@@ -22,7 +25,7 @@ public class SubscriberConfiguration {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter);
-        factory.setClientId("unique-subscriber-listener-client-id");
+        factory.setClientId(String.format("queue-%o-%o-%s", new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
         factory.setAutoStartup(true);
         factory.setPubSubDomain(true);
         factory.setSubscriptionDurable(true);
