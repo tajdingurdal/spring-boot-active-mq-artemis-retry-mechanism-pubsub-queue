@@ -23,11 +23,11 @@ public class MessageAuditService {
         this.messageAuditMapper = messageAuditMapper;
     }
 
-    @Transactional
     public void persist(BaseMessage baseMessage, MessageStatus status) {
         try {
             MessageAuditEntity audit = messageAuditMapper.toEntity(baseMessage, status);
             repository.save(audit);
+            log.info("Message audit persisted successfully. {} Status: {}", baseMessage.getMessageId(), audit.getStatus());
         } catch (Exception e) {
             log.error("Failed to create audit log message {}", baseMessage.getMessageId(), e);
         }
@@ -35,15 +35,19 @@ public class MessageAuditService {
 
     @Transactional
     public void updateStatusByMessageId(String messageId, MessageStatus status) {
-        repository.updateStatusByMessageId(messageId, status);
+        MessageAuditEntity messageAudit = getOneByMessageIdOrFail(messageId);
+        messageAudit.setStatus(status);
+        repository.save(messageAudit);
+
     }
 
     @Transactional
-    public MessageAuditEntity getOneOrFail(String messageId) {
-        if (messageId == null) {
-            return null;
-        }
-        return repository.findByMessageId(messageId).orElseThrow();
+    public MessageAuditEntity getOneByMessageIdOrFail(String messageId) {
+        return repository.findByMessageId(messageId).orElseThrow(() -> new RuntimeException("Message not found by message id: " + messageId));
+    }
+
+    public boolean existsByMessageId(String messageId) {
+        return repository.existsByMessageId(messageId);
     }
 
 

@@ -9,8 +9,6 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
 
 @Service
 public class JMSDLQConsumer {
@@ -22,10 +20,9 @@ public class JMSDLQConsumer {
         this.auditService = auditService;
     }
 
-    @JmsListener(destination = "${spring.activemq.destination.dead-letter-queue}",
+    @JmsListener(destination = "${spring.artemis.destination.dead-letter-queue}",
             containerFactory = "dlqJmsListenerContainerFactory")
-    public void processDLQMessage(final Message message) throws JMSException {
-        BaseMessage baseMessage = (BaseMessage) ((ObjectMessage) message).getObject();
+    public void receiveDLQMsg(final BaseMessage baseMessage) throws JMSException {
         log.warn("Message {} received in DLQ", baseMessage.getMessageId());
         // notify somewhere....
 

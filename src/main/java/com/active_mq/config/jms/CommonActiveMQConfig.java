@@ -1,9 +1,8 @@
 package com.active_mq.config.jms;
 
 import com.active_mq.config.JMSProperties;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.ActiveMQPrefetchPolicy;
-import org.apache.activemq.jms.pool.PooledConnectionFactory;
+import jakarta.jms.JMSException;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -12,8 +11,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
-
-import java.util.List;
 
 @Configuration
 @EnableJms
@@ -28,18 +25,11 @@ public class CommonActiveMQConfig {
     }
 
     @Bean
-    public ActiveMQConnectionFactory connectionFactory() {
+    public ActiveMQConnectionFactory connectionFactory() throws JMSException {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
         factory.setBrokerURL(jmsProperties.getBrokerUrl());
-        factory.setUserName(jmsProperties.getUsername());
+        factory.setUser(jmsProperties.getUsername());
         factory.setPassword(jmsProperties.getPassword());
-        factory.setTrustAllPackages(false);
-        factory.setTrustedPackages(List.of("com.active_mq.model"));
-
-
-        ActiveMQPrefetchPolicy activeMQPrefetchPolicy = new ActiveMQPrefetchPolicy();
-        activeMQPrefetchPolicy.setQueuePrefetch(100);
-        factory.setPrefetchPolicy(activeMQPrefetchPolicy);
 
         return factory;
     }
@@ -53,7 +43,7 @@ public class CommonActiveMQConfig {
 //    }
 
     @Bean
-    public JmsTemplate jmsTemplate() {
+    public JmsTemplate jmsTemplate() throws JMSException {
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
         template.setMessageConverter(jacksonJmsMessageConverter());

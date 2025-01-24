@@ -4,12 +4,12 @@ import com.active_mq.core.model.BaseMessage;
 import com.active_mq.core.service.BaseMessageService;
 import com.active_mq.exception.MessageProcessingException;
 import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.service.jms.JMSRetryService;
 import com.active_mq.service.MessageAuditService;
 import com.active_mq.service.RedeliveryCountManager;
+import com.active_mq.service.jms.JMSRetryService;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
 import java.util.List;
@@ -26,19 +26,18 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
         this.redeliveryCountManager = redeliveryCountManager;
     }
 
-    @JmsListener(destination = "${spring.activemq.destination.message-queue}",
-            containerFactory = "jmsListenerContainerFactory")
-    @Async
+    @JmsListener(destination = "${spring.artemis.destination.message-queue}",
+            containerFactory = "containerFactory")
+    @Transactional
     public <T extends BaseMessage> void receiveMessage(final BaseMessage baseMessage) throws MessageProcessingException, JMSException {
         String messageId = baseMessage.getMessageId();
-        log.info("Processing queue message: {}", messageId);
-
         try {
+            log.info("At Consumer: {}", messageId);
+            auditService.updateStatusByMessageId(baseMessage.getMessageId(), MessageStatus.DELIVERED);
             getService(baseMessage.getSender()).processReceivedData(baseMessage);
-            auditService.updateStatusByMessageId(messageId, MessageStatus.DELIVERED);
             redeliveryCountManager.removeRedeliveryCountFromMap(messageId);
         } catch (Exception e) {
-            log.info("Error processing queue message: {}", messageId);
+            log.info("At Consumer: Error processing queue message: {}", messageId);
             jmsRetryService.handleProcessingError(baseMessage);
         }
     }

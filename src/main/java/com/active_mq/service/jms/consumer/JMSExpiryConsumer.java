@@ -20,9 +20,8 @@ public class JMSExpiryConsumer {
         this.auditService = auditService;
     }
 
-    @JmsListener(destination = "${spring.activemq.destination.expiry-queue}",
+    @JmsListener(destination = "${spring.artemis.destination.expiry-queue}",
             containerFactory = "expiryJmsListenerContainerFactory")
-    @Async
     public <T extends BaseMessage> void receivedExpiryMessage(final BaseMessage baseMessage) throws MessageProcessingException {
         auditService.persist(baseMessage, MessageStatus.EXPIRED);
         log.info("Processed expired message: {}", baseMessage.getMessageId());

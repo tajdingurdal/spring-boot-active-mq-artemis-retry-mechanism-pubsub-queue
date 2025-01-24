@@ -11,6 +11,7 @@ import com.active_mq.utils.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -28,12 +29,14 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
         this.jmsQueueProducer = jmsQueueProducer;
     }
 
+    @Transactional
     public void queuePublishMessage(String msg) {
         ExampleMessage exampleMessage = generateMessage();
         exampleMessage.setContent(msg);
         jmsQueueProducer.sendMessage(exampleMessage);
     }
 
+    @Transactional
     public void topicPublishMessage(String msg) {
         ExampleMessage exampleMessage = generateMessage();
         exampleMessage.setContent(msg);
@@ -49,7 +52,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
     @Override
     public ExampleMessage generateMessage() {
         ExampleMessage message = new ExampleMessage();
-        message.setMessageId(MessageUtils.createMessageId(new Date()));
+        message.setMessageId(MessageUtils.createMessageId());
         message.setSender(ExampleMessageService.class.getSimpleName());
         message.setRecipient(getType());
         message.setDestination(jmsProperties.getDestination().messageQueue());

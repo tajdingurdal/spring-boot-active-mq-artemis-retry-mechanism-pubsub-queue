@@ -37,6 +37,16 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-jms-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-artemis</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
@@ -65,19 +75,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.activemq.tooling</groupId>
-            <artifactId>activemq-junit</artifactId>
-            <version>${activemq.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>${activemq.version}</version>
         </dependency>
 
         <dependency>

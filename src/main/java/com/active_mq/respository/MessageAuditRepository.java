@@ -16,7 +16,10 @@ public interface MessageAuditRepository extends JpaRepository<MessageAuditEntity
 
     @Modifying
     @Query("UPDATE MessageAuditEntity ma SET ma.status =:status WHERE ma.messageId =:messageId")
-    void updateStatusByMessageId(@Param("messageId") String messageId, @Param("status") MessageStatus status);
+    int updateStatusByMessageId(@Param("messageId") String messageId, @Param("status") MessageStatus status);
 
     Optional<MessageAuditEntity> findByMessageId(String messageId);
+    Optional<MessageAuditEntity> findById(int id);
+
+    boolean existsByMessageId(String messageId);
 }

@@ -1,24 +1,23 @@
 spring:
   application:
-    name: Active-MQ
-  activemq:
-    broker-url: tcp://localhost:61616
+    name: Artemis-MQ
+  artemis:
+    username: admin
     password: admin
-    user: admin
-    message-expire-time: 3600000 # 1 hour
+    broker-url: tcp://localhost:61616
+    message-expire-time: 3600
     destination:
       expiry-queue: ExpiryQueue
       dead-letter-queue: ActiveMQ.DLQ
-      group-queue: group.queue
-      message-queue: message.queue
-
-      message-topic: message.topic
+      group-queue: group
+      message-queue: message queue
+      message-topic: message topic
     redelivery:
       max-attempts: 3
       initial-interval: 1000
       multiplier: 2
       max-interval: 10000
-
+    initial-redelivery-delay: 2000 # 2-second delay
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -26,7 +25,12 @@ spring:
     username: postgres
     password:
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     database: postgresql
+
+logging:
+  level:
+    com.active_mq.service.jms.consumer: trace
+ #   org.hibernate: trace

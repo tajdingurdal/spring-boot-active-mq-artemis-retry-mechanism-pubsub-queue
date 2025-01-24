@@ -1,25 +1,21 @@
 name: active-mq-service
 services:
   activemq:
-    image: rmohr/activemq:5.15.9
+    image: apache/activemq-artemis:latest
     container_name: active-mq
     environment:
-      ACTIVEMQ_ADMIN_LOGIN: admin
-      ACTIVEMQ_ADMIN_PASSWORD: admin
-
-      ACTIVEMQ_OPTS: "-Xms512M -Xmx1G"
-
-      ACTIVEMQ_CONFIG_MINMEMORY: 512
-      ACTIVEMQ_CONFIG_MAXMEMORY: 1024
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
+      JAVA_OPTS: "-Xms512M -Xmx1G"
 
     ports:
-      # ui
+      # Web console
       - "8161:8161"
-      # jms
+      # JMS port
       - "61616:61616"
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8161"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8161" ]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -4,11 +4,10 @@ import com.active_mq.core.model.BaseMessage;
 import com.active_mq.exception.MessageProcessingException;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
-import org.apache.activemq.ScheduledMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.Message;
 
@@ -28,13 +27,12 @@ public abstract class BaseJMSProducer {
 
     protected abstract MessageStatus getType();
 
-    @Async
     public <T extends BaseMessage> void sendMessage(final T message) {
         validateMessage(message);
         convertAndSend(message, message.getDestination());
     }
 
-    @Async
+    @Transactional
     public <T extends BaseMessage> void convertAndSend(final T message, final String destination) {
         try {
             jmsTemplate.convertAndSend(destination, message);
@@ -44,13 +42,11 @@ public abstract class BaseJMSProducer {
         }
     }
 
-    @Async
     public <T extends BaseMessage> void sendMessageWithPriority(final T message) {
         validateMessage(message);
         convertAndSendWithPriority(message, message.getDestination(), message.getPriority().getLevel());
     }
 
-    @Async
     public <T extends BaseMessage> void convertAndSendWithPriority(final T message, final String destination, final int priority) {
         try {
             jmsTemplate.setPriority(priority);
@@ -63,13 +59,10 @@ public abstract class BaseJMSProducer {
         }
     }
 
-    @Async
     public <T extends BaseMessage> void sendDelayedMessage(final T message, final String destination, final long deliveryDelay) {
         try {
-            jmsTemplate.convertAndSend(destination, message, postProcessor -> {
-                postProcessor.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, deliveryDelay);
-                return postProcessor;
-            });
+            jmsTemplate.setDeliveryDelay(deliveryDelay);
+            jmsTemplate.convertAndSend(destination, message);
             logSuccessAndAudit(message);
         } catch (Exception e) {
             handleSendError(message, e);
@@ -88,7 +81,11 @@ public abstract class BaseJMSProducer {
     }
 
     protected <T extends BaseMessage> void logSuccessAndAudit(T message) {
-        log.info("Message sent successfully with ID: {} to destination: {}", message.getMessageId(), message.getDestination());
+        log.info("At Producer: {} destination: {}", message.getMessageId(), message.getDestination());
+        if (auditService.existsByMessageId(message.getMessageId())) {
+            log.warn("At Producer: {} duplicate message id: {} So it didn't persist.", message.getMessageId(), message.getMessageId());
+            return;
+        }
         auditService.persist(message, getType());
     }
 

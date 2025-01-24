@@ -16,7 +16,7 @@ import java.util.Map;
 @Table(name = "message_audit")
 public class MessageAuditEntity extends BaseEntity implements Serializable {
 
-    @Column(name = "message_id", nullable = false)
+    @Column(name = "message_id", nullable = false, unique = true, updatable = false)
     private String messageId;
 
     @Column(nullable = false)

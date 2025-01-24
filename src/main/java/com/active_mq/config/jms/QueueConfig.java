@@ -1,11 +1,12 @@
 package com.active_mq.config.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MessageConverter;
 
+import javax.jms.Session;
 import java.util.Random;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class QueueConfig {
     }
 
     @Bean
-    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+    public DefaultJmsListenerContainerFactory containerFactory() {
         return createJmsListenerContainerFactory("queue");
     }
 
@@ -42,11 +43,12 @@ public class QueueConfig {
         factory.setMessageConverter(messageConverter);
         factory.setClientId(String.format("%s-%o-%o-%s", type, new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
         factory.setAutoStartup(true);
-        factory.setConcurrency("1-10");
+        factory.setConcurrency("1-1");
         factory.setErrorHandler(t -> {
             System.err.println("Error in listener for queue: " + t.getMessage());
             t.printStackTrace();
         });
+        factory.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE);
         return factory;
     }
 }

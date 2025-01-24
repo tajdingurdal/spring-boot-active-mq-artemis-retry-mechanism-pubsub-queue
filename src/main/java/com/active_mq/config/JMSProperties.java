@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
-@ConfigurationProperties(prefix = "spring.activemq")
+@ConfigurationProperties(prefix = "spring.artemis")
 @Validated
 public class JMSProperties {
 

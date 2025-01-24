@@ -20,12 +20,11 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
     }
 
     @JmsListener(
-            destination = "${spring.activemq.destination.message-topic}",
+            destination = "${spring.artemis.destination.message-topic}",
             containerFactory = "jmsSubscriberListenerContainerFactory",
             subscription = "default-topic-subscription"
     )
-    @Async
-    public <T extends BaseMessage> void receiveMessage(final BaseMessage baseMessage) throws MessageProcessingException {
+    public <T extends BaseMessage> void receiveTopicMsg(final BaseMessage baseMessage) throws MessageProcessingException {
         log.info("Processing topic message: {}", baseMessage.getMessageId());
         try {
             getService(baseMessage.getSender()).processReceivedData(baseMessage);
