@@ -9,7 +9,7 @@ public class MessageUtils {
 
     private static Random random = new Random();
 
-    public static String createMessageId() {
+    public static String createUniqueMessageId() {
         String mark = Long.toHexString(random.nextLong());
         return String.format("%o-%s-%s", System.currentTimeMillis(), mark, UUID.randomUUID());
     }

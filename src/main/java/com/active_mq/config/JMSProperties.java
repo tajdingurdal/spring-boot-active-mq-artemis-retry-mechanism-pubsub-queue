@@ -84,6 +84,7 @@ public class JMSProperties {
                               String deadLetterQueue,
                               String groupQueue,
                               String messageQueue,
+                              String startSignalQueue,
                               String messageTopic) {
 
     }

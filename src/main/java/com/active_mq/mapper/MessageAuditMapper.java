@@ -2,6 +2,7 @@ package com.active_mq.mapper;
 
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.model.entity.MessageAuditEntity;
+import com.active_mq.model.enums.ChannelType;
 import com.active_mq.model.enums.MessageStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mapstruct.Mapper;
@@ -14,7 +15,7 @@ import java.util.Map;
 @Component
 public abstract class MessageAuditMapper {
 
-    public MessageAuditEntity toEntity(BaseMessage baseMessage, MessageStatus status) throws JsonProcessingException {
+    public MessageAuditEntity toEntity(BaseMessage baseMessage, ChannelType channelType, MessageStatus status) throws JsonProcessingException {
         MessageAuditEntity messageAuditEntity = new MessageAuditEntity();
         messageAuditEntity.setMessageId(baseMessage.getMessageId());
         messageAuditEntity.setSender(baseMessage.getSender());
@@ -23,6 +24,7 @@ public abstract class MessageAuditMapper {
         messageAuditEntity.setPriority(baseMessage.getPriority());
         messageAuditEntity.setMessageType(baseMessage.getMessageType());
         messageAuditEntity.setStatus(status);
+        messageAuditEntity.setChannelType(channelType);
         messageAuditEntity.setMetadata(buildMetadata(baseMessage));
 
         return messageAuditEntity;

@@ -8,25 +8,25 @@ public class BaseEntity extends BaseAuditingEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private int id;
+    private Long id;
 
     @Version
     @Column(name = "version", nullable = false)
-    private int version;
+    private Long version;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

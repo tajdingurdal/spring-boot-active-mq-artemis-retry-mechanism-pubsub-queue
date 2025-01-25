@@ -4,44 +4,59 @@ import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.core.service.BaseMessageService;
 import com.active_mq.model.dto.ExampleMessage;
+import com.active_mq.model.enums.ChannelType;
 import com.active_mq.model.enums.MessagePriority;
 import com.active_mq.model.enums.MessageType;
-import com.active_mq.service.jms.producer.JMSQueueProducer;
+import com.active_mq.service.jms.producer.abstrct.BaseJMSProducer;
 import com.active_mq.utils.MessageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.List;
 
 @Service
 public class ExampleMessageService implements BaseMessageService<ExampleMessage> {
 
+    private final MessageAuditService messageAuditService;
     Logger log = LoggerFactory.getLogger(ExampleMessageService.class);
 
     private final JMSProperties jmsProperties;
 
-    private final JMSQueueProducer jmsQueueProducer;
+    private final List<BaseJMSProducer> producers;
 
-    public ExampleMessageService(JMSProperties jmsProperties, JMSQueueProducer jmsQueueProducer) {
+    public ExampleMessageService(JMSProperties jmsProperties, List<BaseJMSProducer> producers, MessageAuditService messageAuditService) {
         this.jmsProperties = jmsProperties;
-        this.jmsQueueProducer = jmsQueueProducer;
+        this.producers = producers;
+        this.messageAuditService = messageAuditService;
     }
 
-    @Transactional
     public void queuePublishMessage(String msg) {
-        ExampleMessage exampleMessage = generateMessage();
-        exampleMessage.setContent(msg);
-        jmsQueueProducer.sendMessage(exampleMessage);
+        ChannelType channelType = ChannelType.QUEUE;
+        ExampleMessage message = generateMessage(jmsProperties.getDestination().messageQueue());
+        message.setContent(msg);
+        message.setChannelType(channelType);
+        messageAuditService.firstPersist(message, channelType);
+        doSend(message, channelType);
     }
 
-    @Transactional
+
     public void topicPublishMessage(String msg) {
-        ExampleMessage exampleMessage = generateMessage();
-        exampleMessage.setContent(msg);
-        exampleMessage.setDestination(jmsProperties.getDestination().messageTopic());
-        jmsQueueProducer.sendMessage(exampleMessage);
+        ChannelType channelType = ChannelType.TOPIC;
+        ExampleMessage message = generateMessage(jmsProperties.getDestination().messageTopic());
+        message.setContent(msg);
+        message.setChannelType(channelType);
+        messageAuditService.firstPersist(message, channelType);
+        doSend(message, channelType);
+    }
+
+    @Override
+    public void doSend(BaseMessage message, ChannelType type) {
+        producers.stream()
+                .filter(service -> service.getChannelType().equals(type))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Producer not found: " + type))
+                .sendMessage(message);
     }
 
     @Override
@@ -50,12 +65,12 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
     }
 
     @Override
-    public ExampleMessage generateMessage() {
+    public ExampleMessage generateMessage(String destination) {
         ExampleMessage message = new ExampleMessage();
-        message.setMessageId(MessageUtils.createMessageId());
-        message.setSender(ExampleMessageService.class.getSimpleName());
+        message.setMessageId(MessageUtils.createUniqueMessageId());
+        message.setSender(getType());
         message.setRecipient(getType());
-        message.setDestination(jmsProperties.getDestination().messageQueue());
+        message.setDestination(destination);
         message.setPriority(MessagePriority.DEFAULT);
         message.setMessageType(MessageType.SYSTEM);
         message.setExpirationDate(MessageUtils.defaultExpirationDate());

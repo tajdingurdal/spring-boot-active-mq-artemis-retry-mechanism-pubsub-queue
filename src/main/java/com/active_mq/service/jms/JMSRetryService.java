@@ -58,7 +58,7 @@ public class JMSRetryService {
     }
 
     private long calculateRetryDelay(int retryCount) {
-
+/*
         int oneMinute = 60 * 1000;
 
         if (retryCount == 0) {
@@ -68,6 +68,9 @@ public class JMSRetryService {
         } else {
             return oneMinute * 3;
         }
+
+ */
+        return 500;
     }
 
     private boolean shouldRetryMessage(BaseMessage message, final int redeliveryCount) {

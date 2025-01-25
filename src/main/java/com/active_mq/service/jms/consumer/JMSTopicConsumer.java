@@ -1,22 +1,25 @@
 package com.active_mq.service.jms.consumer;
 
+import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.core.service.BaseMessageService;
-import com.active_mq.exception.MessageProcessingException;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
+import com.active_mq.service.jms.consumer.abstrct.BaseJMSConsumer;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
-@Service
+@Component
 public class JMSTopicConsumer extends BaseJMSConsumer {
 
-
-    public JMSTopicConsumer(MessageAuditService auditService, List<BaseMessageService> messageServices) {
-        super(auditService, messageServices);
+    public JMSTopicConsumer(MessageAuditService auditService, List<BaseMessageService> messageServices, JMSProperties jmsProperties, JmsTemplate jmsTemplate) {
+        super(auditService, messageServices, jmsProperties, jmsTemplate);
     }
 
     @JmsListener(
@@ -24,14 +27,22 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
             containerFactory = "jmsSubscriberListenerContainerFactory",
             subscription = "default-topic-subscription"
     )
-    public <T extends BaseMessage> void receiveTopicMsg(final BaseMessage baseMessage) throws MessageProcessingException {
+    @Async
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Override
+    public void processMainMessage(BaseMessage baseMessage) {
         log.info("Processing topic message: {}", baseMessage.getMessageId());
         try {
             getService(baseMessage.getSender()).processReceivedData(baseMessage);
-            auditService.updateStatusByMessageId(baseMessage.getMessageId(), MessageStatus.DELIVERED);
+            updateMessageStatusByMessageId(baseMessage.getMessageId(), MessageStatus.DELIVERED);
         } catch (Exception e) {
             log.info("Error processing topic message: {}", baseMessage.getMessageId());
-            auditService.updateStatusByMessageId(baseMessage.getMessageId(), MessageStatus.FAILED);
+            updateMessageStatusByMessageId(baseMessage.getMessageId(), MessageStatus.FAILED);
         }
+    }
+
+    @Override
+    protected <T extends BaseMessage> void signal(String str) {
+        return;
     }
 }

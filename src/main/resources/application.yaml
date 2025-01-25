@@ -10,14 +10,16 @@ spring:
       expiry-queue: ExpiryQueue
       dead-letter-queue: ActiveMQ.DLQ
       group-queue: group
-      message-queue: message queue
-      message-topic: message topic
+      message-queue: message-queue
+      start-signal-queue: signal-queue
+
+      message-topic: message-topic
+
     redelivery:
       max-attempts: 3
       initial-interval: 1000
       multiplier: 2
       max-interval: 10000
-    initial-redelivery-delay: 2000 # 2-second delay
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

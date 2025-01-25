@@ -1,6 +1,6 @@
 package com.active_mq.service.jms.producer;
 
-import com.active_mq.model.enums.MessageStatus;
+import com.active_mq.model.enums.ChannelType;
 import com.active_mq.service.MessageAuditService;
 import com.active_mq.service.jms.producer.abstrct.BaseJMSProducer;
 import org.springframework.jms.core.JmsTemplate;
@@ -15,7 +15,7 @@ public class JMSQueueProducer extends BaseJMSProducer {
     }
 
     @Override
-    protected MessageStatus getType() {
-        return MessageStatus.QUEUED;
+    public ChannelType getChannelType() {
+        return ChannelType.QUEUE;
     }
 }

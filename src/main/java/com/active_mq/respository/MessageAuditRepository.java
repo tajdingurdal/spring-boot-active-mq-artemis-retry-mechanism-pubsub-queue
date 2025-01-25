@@ -2,7 +2,9 @@ package com.active_mq.respository;
 
 import com.active_mq.model.entity.MessageAuditEntity;
 import com.active_mq.model.enums.MessageStatus;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +21,7 @@ public interface MessageAuditRepository extends JpaRepository<MessageAuditEntity
     int updateStatusByMessageId(@Param("messageId") String messageId, @Param("status") MessageStatus status);
 
     Optional<MessageAuditEntity> findByMessageId(String messageId);
+
     Optional<MessageAuditEntity> findById(int id);
 
     boolean existsByMessageId(String messageId);
