@@ -31,14 +31,15 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Override
     public void processMainMessage(BaseMessage baseMessage) {
-        log.info("Processing topic message: {}", baseMessage.getMessageId());
+        String messageId = baseMessage.getMessageId();
+        log.info("At Topic Consumer: {}", messageId);
         try {
             getService(baseMessage.getSender()).processReceivedData(baseMessage);
             Thread.sleep(10);
-            updateMessageStatusByMessageId(baseMessage.getMessageId(), MessageStatus.DELIVERED);
+            updateMessageStatusByMessageId(messageId, MessageStatus.DELIVERED);
         } catch (Exception e) {
-            log.info("Error processing topic message: {}", baseMessage.getMessageId());
-            updateMessageStatusByMessageId(baseMessage.getMessageId(), MessageStatus.FAILED);
+            log.info("At Topic Consumer: Error processing queue message: {}", messageId);
+            updateMessageStatusByMessageId(messageId, MessageStatus.FAILED);
         }
     }
 

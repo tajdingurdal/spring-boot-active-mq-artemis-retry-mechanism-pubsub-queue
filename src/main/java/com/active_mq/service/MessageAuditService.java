@@ -6,10 +6,8 @@ import com.active_mq.model.entity.MessageAuditEntity;
 import com.active_mq.model.enums.ChannelType;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.respository.MessageAuditRepository;
-import jakarta.persistence.LockModeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +25,9 @@ public class MessageAuditService {
     }
 
     @Transactional
-    public void firstPersist(BaseMessage baseMessage, ChannelType channelType) {
+    public void persist(BaseMessage baseMessage, ChannelType channelType) {
         try {
-            MessageAuditEntity audit = messageAuditMapper.toEntity(baseMessage, channelType, MessageStatus.CREATED);
+            MessageAuditEntity audit = messageAuditMapper.toEntity(baseMessage, channelType);
             repository.save(audit);
             repository.flush();
             log.info("Message audit created successfully. {} Status: {}", baseMessage.getMessageId(), audit.getStatus());

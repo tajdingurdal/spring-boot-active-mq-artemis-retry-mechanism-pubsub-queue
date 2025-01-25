@@ -5,7 +5,7 @@ spring:
     username: admin
     password: admin
     broker-url: tcp://localhost:61616
-    message-expire-time: 3600
+    message-expire-time: 3600000 # 1 hour
     destination:
       expiry-queue: ExpiryQueue
       dead-letter-queue: ActiveMQ.DLQ

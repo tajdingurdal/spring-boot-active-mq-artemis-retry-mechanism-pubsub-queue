@@ -55,7 +55,7 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
             redeliveryCountManager.removeRedeliveryCountFromMap(messageId);
         } catch (Exception e) {
             log.info("At Queue Consumer: Error processing queue message: {}", messageId);
-            //        jmsRetryService.handleProcessingError(baseMessage);
+            jmsRetryService.handleProcessingError(baseMessage);
         }
     }
 }

@@ -16,12 +16,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import javax.jms.JMSException;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class JMSExpiryConsumer extends BaseJMSConsumer {
 
     Logger log = LoggerFactory.getLogger(JMSExpiryConsumer.class);
+    Set<String> latest10Message = ConcurrentHashMap.newKeySet(10);
 
     public JMSExpiryConsumer(MessageAuditService auditService, List<BaseMessageService> messageServices, JmsTemplate jmsTemplate, JMSProperties jmsProperties) {
         super(auditService, messageServices, jmsProperties, jmsTemplate);
@@ -31,9 +35,15 @@ public class JMSExpiryConsumer extends BaseJMSConsumer {
             containerFactory = "expiryJmsListenerContainerFactory")
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public <T extends BaseMessage> void receivedExpiryMessage(final BaseMessage baseMessage) throws MessageProcessingException {
-        updateMessageStatusByMessageId(baseMessage.getMessageId(), MessageStatus.EXPIRED);
-        log.info("Processed expired message: {}", baseMessage.getMessageId());
+    public <T extends BaseMessage> void receivedExpiryMessage(final BaseMessage baseMessage) throws MessageProcessingException, JMSException {
+        String messageId = baseMessage.getMessageId();
+        if (latest10Message.contains(messageId)) {
+            return;
+        }
+
+        log.info("At expired message consumer: {}", messageId);
+        updateMessageStatusByMessageId(messageId, MessageStatus.EXPIRED);
+        latest10Message.add(messageId);
     }
 
     @Override

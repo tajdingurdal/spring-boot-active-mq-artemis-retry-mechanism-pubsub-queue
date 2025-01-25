@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public abstract class MessageAuditMapper {
 
-    public MessageAuditEntity toEntity(BaseMessage baseMessage, ChannelType channelType, MessageStatus status) throws JsonProcessingException {
+    public MessageAuditEntity toEntity(BaseMessage baseMessage, ChannelType channelType) throws JsonProcessingException {
         MessageAuditEntity messageAuditEntity = new MessageAuditEntity();
         messageAuditEntity.setMessageId(baseMessage.getMessageId());
         messageAuditEntity.setSender(baseMessage.getSender());
@@ -23,7 +23,7 @@ public abstract class MessageAuditMapper {
         messageAuditEntity.setMessageContent(baseMessage.getContent());
         messageAuditEntity.setPriority(baseMessage.getPriority());
         messageAuditEntity.setMessageType(baseMessage.getMessageType());
-        messageAuditEntity.setStatus(status);
+        messageAuditEntity.setStatus(baseMessage.getStatus());
         messageAuditEntity.setChannelType(channelType);
         messageAuditEntity.setMetadata(buildMetadata(baseMessage));
 

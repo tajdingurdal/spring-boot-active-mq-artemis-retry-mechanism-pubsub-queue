@@ -46,7 +46,8 @@ public abstract class BaseJMSProducer {
         try {
             jmsTemplate.convertAndSend(destination, message);
             logSuccessAndAudit(message);
-            sendStartSignal(destination);
+            if (!destination.equals(jmsProperties.getDestination().deadLetterQueue()))
+                sendStartSignal(destination);
         } catch (Exception e) {
             handleSendError(message, e);
         }
@@ -106,8 +107,7 @@ public abstract class BaseJMSProducer {
 
     protected <T extends BaseMessage> void logSuccessAndAudit(T message) {
         log.info("At Producer: {} destination: {}", message.getMessageId(), message.getDestination());
-        var status = getChannelType().equals(TOPIC) ? MessageStatus.TOPIC : MessageStatus.QUEUED;
-        auditService.updateStatusByMessageId(message.getMessageId(), status);
+        auditService.updateStatusByMessageId(message.getMessageId(), message.getStatus());
     }
 
     protected <T extends BaseMessage> void handleSendError(T message, Exception e) {

@@ -14,7 +14,7 @@ public class MessageUtils {
         return String.format("%o-%s-%s", System.currentTimeMillis(), mark, UUID.randomUUID());
     }
 
-    public static Instant defaultExpirationDate() {
-        return Instant.now().plusSeconds(3600);
+    public static Instant defaultExpirationDate(int milliseconds) {
+        return Instant.now().plusMillis(milliseconds);
     }
 }

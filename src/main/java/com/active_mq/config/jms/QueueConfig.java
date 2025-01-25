@@ -43,7 +43,7 @@ public class QueueConfig {
         factory.setMessageConverter(messageConverter);
         factory.setClientId(String.format("%s-%o-%o-%s", type, new Random().nextInt(), System.currentTimeMillis(), UUID.randomUUID()));
         factory.setAutoStartup(true);
-        factory.setConcurrency("1-1");
+        factory.setConcurrency("1");
         factory.setErrorHandler(t -> {
             System.err.println("Error in listener for queue: " + t.getMessage());
             t.printStackTrace();
