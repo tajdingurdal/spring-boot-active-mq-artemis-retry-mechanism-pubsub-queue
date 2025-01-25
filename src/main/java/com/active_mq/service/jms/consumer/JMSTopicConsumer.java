@@ -34,6 +34,7 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
         log.info("Processing topic message: {}", baseMessage.getMessageId());
         try {
             getService(baseMessage.getSender()).processReceivedData(baseMessage);
+            Thread.sleep(10);
             updateMessageStatusByMessageId(baseMessage.getMessageId(), MessageStatus.DELIVERED);
         } catch (Exception e) {
             log.info("Error processing topic message: {}", baseMessage.getMessageId());
