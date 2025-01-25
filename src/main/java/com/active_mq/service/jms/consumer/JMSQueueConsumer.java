@@ -50,8 +50,8 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
         String messageId = baseMessage.getMessageId();
         try {
             log.info("At Queue Consumer: {}", messageId);
-            updateMessageStatusByMessageId(messageId, MessageStatus.DELIVERED);
             getService(baseMessage.getSender()).processReceivedData(baseMessage);
+            updateMessageStatusByMessageId(messageId, MessageStatus.DELIVERED);
             redeliveryCountManager.removeRedeliveryCountFromMap(messageId);
         } catch (Exception e) {
             log.info("At Queue Consumer: Error processing queue message: {}", messageId);
