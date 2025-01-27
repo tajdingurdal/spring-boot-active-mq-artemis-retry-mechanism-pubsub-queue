@@ -2,7 +2,7 @@ package com.active_mq.service.jms;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.core.service.BaseMessageService;
+import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.model.dto.DLQMessage;
 import com.active_mq.model.enums.ChannelType;
 import com.active_mq.model.enums.MessagePriority;

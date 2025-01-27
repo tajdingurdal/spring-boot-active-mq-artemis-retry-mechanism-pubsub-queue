@@ -2,7 +2,7 @@ package com.active_mq.service.jms.consumer.abstrct;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.core.service.BaseMessageService;
+import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
 import org.slf4j.Logger;

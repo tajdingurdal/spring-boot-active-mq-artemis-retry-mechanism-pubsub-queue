@@ -1,4 +1,4 @@
-package com.active_mq.core.service;
+package com.active_mq.service.base;
 
 
 import com.active_mq.core.model.BaseMessage;
