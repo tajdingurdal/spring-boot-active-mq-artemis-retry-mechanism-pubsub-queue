@@ -77,4 +77,4 @@ A messaging system implementing queues, topics, and retry mechanisms using Sprin
 - **ActiveMQ**: Message broker service
 
 ## Developer
-Tajdin Gurdal (tajdingurdal@gmail.com)
+Tajdin Gurdal
