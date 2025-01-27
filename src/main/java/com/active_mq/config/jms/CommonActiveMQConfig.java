@@ -47,8 +47,8 @@ public class CommonActiveMQConfig {
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
         template.setMessageConverter(jacksonJmsMessageConverter());
-        template.setTimeToLive(jmsProperties.getMessageExpireTime());
         template.setExplicitQosEnabled(true);
+        template.setTimeToLive(jmsProperties.getMessageExpireTime());
         return template;
     }
 

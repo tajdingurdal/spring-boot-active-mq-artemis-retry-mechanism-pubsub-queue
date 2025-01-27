@@ -8,6 +8,7 @@ import com.active_mq.service.RedeliveryCountManager;
 import com.active_mq.service.jms.producer.JMSQueueProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -31,6 +32,7 @@ public class JMSRetryService {
         this.redeliveryCountManager = redeliveryCountManager;
     }
 
+    @Async
     public void handleProcessingError(final BaseMessage baseMessage) {
         String messageId = baseMessage.getMessageId();
         int redeliveryCount = redeliveryCountManager.getRedeliveryCountFromMap(messageId).get();
