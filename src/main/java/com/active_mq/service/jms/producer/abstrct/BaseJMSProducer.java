@@ -58,6 +58,7 @@ public abstract class BaseJMSProducer {
             jmsTemplate.setPubSubDomain(true);
             jmsTemplate.convertAndSend(destination, message);
             logSuccessAndAudit(message);
+            jmsTemplate.setPubSubDomain(false);
         } catch (Exception e) {
             handleSendError(message, e);
         }
