@@ -2,9 +2,10 @@ package com.active_mq.service.jms.consumer.abstrct;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.service.base.BaseMessageService;
+import com.active_mq.model.enums.ConsumerType;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
+import com.active_mq.service.base.BaseMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -22,24 +23,13 @@ public abstract class BaseJMSConsumer {
     public BaseJMSConsumer(MessageAuditService auditService, List<BaseMessageService> messageServices, JMSProperties jmsProperties, JmsTemplate jmsTemplate) {
         this.auditService = auditService;
         this.messageServices = messageServices;
+
         this.jmsProperties = jmsProperties;
         this.jmsTemplate = jmsTemplate;
     }
 
-
-    protected abstract <T extends BaseMessage> void signal(final String str);
-
-    protected abstract void processMainMessage(BaseMessage baseMessage);
-
     public void updateMessageStatusByMessageId(String messageId, MessageStatus status) {
         auditService.updateStatusByMessageId(messageId, status);
-    }
-
-    protected BaseMessage receiveMainMessage(String destination) {
-        BaseMessage baseMessage = (BaseMessage) jmsTemplate.receiveAndConvert(destination);
-
-        log.info("Receiving the main message.... {}", baseMessage);
-        return baseMessage;
     }
 
     protected BaseMessageService getService(String sender) {
@@ -49,5 +39,7 @@ public abstract class BaseJMSConsumer {
                 .orElseThrow(() -> new RuntimeException("Service not found for sender: " + sender));
     }
 
+    public abstract void processMainMessage(BaseMessage baseMessage);
 
+    public abstract ConsumerType consumerType();
 }

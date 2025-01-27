@@ -34,7 +34,7 @@ public class JMSRetryService {
     public void handleProcessingError(final BaseMessage baseMessage) {
         String messageId = baseMessage.getMessageId();
         int redeliveryCount = redeliveryCountManager.getRedeliveryCountFromMap(messageId).get();
-        log.error("Error processing message {} attempt: {}", messageId, redeliveryCount);
+        log.error("\nError processing message {} attempt: {}", messageId, redeliveryCount);
         if (shouldRetryMessage(baseMessage, redeliveryCount)) {
             handleRetry(baseMessage);
         } else {

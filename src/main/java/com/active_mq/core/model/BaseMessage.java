@@ -1,9 +1,6 @@
 package com.active_mq.core.model;
 
-import com.active_mq.model.enums.ChannelType;
-import com.active_mq.model.enums.MessagePriority;
-import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.model.enums.MessageType;
+import com.active_mq.model.enums.*;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -19,6 +16,7 @@ public class BaseMessage implements IMessage, Serializable {
     private MessagePriority priority;
     private MessageType messageType;
     private ChannelType channelType;
+    private ConsumerType consumerType;
     private MessageStatus status;
     private Instant expirationDate;
 
@@ -87,6 +85,14 @@ public class BaseMessage implements IMessage, Serializable {
 
     public void setChannelType(ChannelType channelType) {
         this.channelType = channelType;
+    }
+
+    public ConsumerType getConsumerType() {
+        return consumerType;
+    }
+
+    public void setConsumerType(ConsumerType consumerType) {
+        this.consumerType = consumerType;
     }
 
     public MessageStatus getStatus() {

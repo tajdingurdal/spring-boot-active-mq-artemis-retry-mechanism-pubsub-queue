@@ -2,13 +2,9 @@ package com.active_mq.service.jms;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.model.dto.DLQMessage;
-import com.active_mq.model.enums.ChannelType;
-import com.active_mq.model.enums.MessagePriority;
-import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.model.enums.MessageType;
-import com.active_mq.service.RedeliveryCountManager;
+import com.active_mq.model.enums.*;
+import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.service.jms.producer.abstrct.BaseJMSProducer;
 import com.active_mq.utils.MessageUtils;
 import org.slf4j.Logger;
@@ -23,12 +19,10 @@ public class JMSDLQService implements BaseMessageService<DLQMessage> {
     Logger log = LoggerFactory.getLogger(JMSDLQService.class);
 
     private final JMSProperties jmsProperties;
-    private final RedeliveryCountManager redeliveryCountManager;
     private final List<BaseJMSProducer> producers;
 
-    public JMSDLQService(JMSProperties jmsProperties, RedeliveryCountManager redeliveryCountManager, List<BaseJMSProducer> producers) {
+    public JMSDLQService(JMSProperties jmsProperties, List<BaseJMSProducer> producers) {
         this.jmsProperties = jmsProperties;
-        this.redeliveryCountManager = redeliveryCountManager;
         this.producers = producers;
     }
 
@@ -37,8 +31,8 @@ public class JMSDLQService implements BaseMessageService<DLQMessage> {
         message.setChannelType(channelType);
         message.setStatus(MessageStatus.DLQ);
         message.setDestination(jmsProperties.getDestination().deadLetterQueue());
+        message.setConsumerType(ConsumerType.DLQ);
         doSend(message, channelType);
-        redeliveryCountManager.remove(message.getMessageId());
     }
 
     @Override
@@ -50,6 +44,7 @@ public class JMSDLQService implements BaseMessageService<DLQMessage> {
         message.setDestination(destination);
         message.setPriority(MessagePriority.DEFAULT);
         message.setMessageType(MessageType.SYSTEM);
+        message.setConsumerType(ConsumerType.DLQ);
         message.setStatus(MessageStatus.DLQ);
         message.setExpirationDate(MessageUtils.defaultExpirationDate(jmsProperties.getMessageExpireTime()));
         return message;

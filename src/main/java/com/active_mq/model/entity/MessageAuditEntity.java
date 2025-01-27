@@ -2,10 +2,7 @@ package com.active_mq.model.entity;
 
 import com.active_mq.core.converter.MapConverter;
 import com.active_mq.core.model.BaseEntity;
-import com.active_mq.model.enums.ChannelType;
-import com.active_mq.model.enums.MessagePriority;
-import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.model.enums.MessageType;
+import com.active_mq.model.enums.*;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
@@ -27,6 +24,10 @@ public class MessageAuditEntity extends BaseEntity implements Serializable {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ChannelType channelType;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ConsumerType consumerType;
 
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
@@ -54,10 +55,11 @@ public class MessageAuditEntity extends BaseEntity implements Serializable {
     public MessageAuditEntity() {
     }
 
-    public MessageAuditEntity(String messageId, MessageStatus status, ChannelType channelType, MessageType messageType, String sender, String recipient, String messageContent, MessagePriority priority, String errorMessage, Map<String, String> metadata) {
+    public MessageAuditEntity(String messageId, MessageStatus status, ChannelType channelType, ConsumerType consumerType, MessageType messageType, String sender, String recipient, String messageContent, MessagePriority priority, String errorMessage, Map<String, String> metadata) {
         this.messageId = messageId;
         this.status = status;
         this.channelType = channelType;
+        this.consumerType = consumerType;
         this.messageType = messageType;
         this.sender = sender;
         this.recipient = recipient;
@@ -89,6 +91,14 @@ public class MessageAuditEntity extends BaseEntity implements Serializable {
 
     public void setChannelType(ChannelType channelType) {
         this.channelType = channelType;
+    }
+
+    public ConsumerType getConsumerType() {
+        return consumerType;
+    }
+
+    public void setConsumerType(ConsumerType consumerType) {
+        this.consumerType = consumerType;
     }
 
     public MessageType getMessageType() {

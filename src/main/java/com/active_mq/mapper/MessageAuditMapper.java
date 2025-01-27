@@ -16,18 +16,19 @@ import java.util.Map;
 public abstract class MessageAuditMapper {
 
     public MessageAuditEntity toEntity(BaseMessage baseMessage, ChannelType channelType) throws JsonProcessingException {
-        MessageAuditEntity messageAuditEntity = new MessageAuditEntity();
-        messageAuditEntity.setMessageId(baseMessage.getMessageId());
-        messageAuditEntity.setSender(baseMessage.getSender());
-        messageAuditEntity.setRecipient(baseMessage.getRecipient());
-        messageAuditEntity.setMessageContent(baseMessage.getContent());
-        messageAuditEntity.setPriority(baseMessage.getPriority());
-        messageAuditEntity.setMessageType(baseMessage.getMessageType());
-        messageAuditEntity.setStatus(baseMessage.getStatus());
-        messageAuditEntity.setChannelType(channelType);
-        messageAuditEntity.setMetadata(buildMetadata(baseMessage));
+        MessageAuditEntity entity = new MessageAuditEntity();
+        entity.setMessageId(baseMessage.getMessageId());
+        entity.setSender(baseMessage.getSender());
+        entity.setRecipient(baseMessage.getRecipient());
+        entity.setMessageContent(baseMessage.getContent());
+        entity.setPriority(baseMessage.getPriority());
+        entity.setMessageType(baseMessage.getMessageType());
+        entity.setStatus(baseMessage.getStatus());
+        entity.setChannelType(channelType);
+        entity.setConsumerType(baseMessage.getConsumerType());
+        entity.setMetadata(buildMetadata(baseMessage));
 
-        return messageAuditEntity;
+        return entity;
     }
 
     private Map<String, String> buildMetadata(BaseMessage baseMessage) {

@@ -2,12 +2,9 @@ package com.active_mq.service;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.model.dto.ExampleMessage;
-import com.active_mq.model.enums.ChannelType;
-import com.active_mq.model.enums.MessagePriority;
-import com.active_mq.model.enums.MessageStatus;
-import com.active_mq.model.enums.MessageType;
+import com.active_mq.model.enums.*;
+import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.service.jms.producer.abstrct.BaseJMSProducer;
 import com.active_mq.utils.MessageUtils;
 import org.slf4j.Logger;
@@ -37,6 +34,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
         ExampleMessage message = generateMessage(jmsProperties.getDestination().messageQueue());
         message.setContent(msg);
         message.setChannelType(channelType);
+        message.setConsumerType(ConsumerType.QUEUE);
         message.setStatus(MessageStatus.CREATED);
         messageAuditService.persist(message, channelType);
         doSend(message, channelType);
@@ -48,6 +46,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
         ExampleMessage message = generateMessage(jmsProperties.getDestination().messageTopic());
         message.setContent(msg);
         message.setChannelType(channelType);
+        message.setConsumerType(ConsumerType.TOPIC);
         message.setStatus(MessageStatus.CREATED);
         messageAuditService.persist(message, channelType);
         doSend(message, channelType);
@@ -71,7 +70,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
     public ExampleMessage generateMessage(String destination) {
         ExampleMessage message = new ExampleMessage();
         message.setMessageId(MessageUtils.createUniqueMessageId());
-        message.setSender(getType());
+        message.setSender(getType()+"1");
         message.setRecipient(getType());
         message.setDestination(destination);
         message.setPriority(MessagePriority.DEFAULT);

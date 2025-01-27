@@ -2,6 +2,7 @@ package com.active_mq.service.jms.consumer;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
+import com.active_mq.model.enums.ConsumerType;
 import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
@@ -44,7 +45,8 @@ public class JMSTopicConsumer extends BaseJMSConsumer {
     }
 
     @Override
-    protected <T extends BaseMessage> void signal(String str) {
-        return;
+    public ConsumerType consumerType() {
+        return ConsumerType.TOPIC;
     }
+
 }

@@ -2,19 +2,15 @@ package com.active_mq.service.jms.consumer;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.service.base.BaseMessageService;
-import com.active_mq.exception.MessageProcessingException;
+import com.active_mq.model.enums.ConsumerType;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
 import com.active_mq.service.RedeliveryCountManager;
+import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.service.jms.JMSRetryService;
 import com.active_mq.service.jms.consumer.abstrct.BaseJMSConsumer;
-import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
@@ -30,21 +26,6 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
         this.redeliveryCountManager = redeliveryCountManager;
     }
 
-    @JmsListener(destination = "${spring.artemis.destination.start-signal-queue}",
-            containerFactory = "containerFactory")
-    @Async
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Override
-    public <T extends BaseMessage> void signal(final String str) throws MessageProcessingException {
-        String messageQueue = jmsProperties.getDestination().messageQueue();
-        if (!str.equals(messageQueue)) {
-            return;
-        }
-        BaseMessage mainMessage = receiveMainMessage(messageQueue);
-        assert mainMessage != null;
-        processMainMessage(mainMessage);
-    }
-
     @Override
     public void processMainMessage(BaseMessage baseMessage) {
         String messageId = baseMessage.getMessageId();
@@ -57,5 +38,10 @@ public class JMSQueueConsumer extends BaseJMSConsumer {
             log.info("At Queue Consumer: Error processing queue message: {}", messageId);
             jmsRetryService.handleProcessingError(baseMessage);
         }
+    }
+
+    @Override
+    public ConsumerType consumerType() {
+        return ConsumerType.QUEUE;
     }
 }

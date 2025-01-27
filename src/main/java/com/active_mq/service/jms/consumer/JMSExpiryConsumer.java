@@ -2,10 +2,11 @@ package com.active_mq.service.jms.consumer;
 
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
-import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.exception.MessageProcessingException;
+import com.active_mq.model.enums.ConsumerType;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
+import com.active_mq.service.base.BaseMessageService;
 import com.active_mq.service.jms.consumer.abstrct.BaseJMSConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +48,12 @@ public class JMSExpiryConsumer extends BaseJMSConsumer {
     }
 
     @Override
-    protected <T extends BaseMessage> void signal(String str) {
+    public void processMainMessage(BaseMessage baseMessage) {
 
     }
 
     @Override
-    protected void processMainMessage(BaseMessage baseMessage) {
-
+    public ConsumerType consumerType() {
+        return ConsumerType.EXPIRY;
     }
 }

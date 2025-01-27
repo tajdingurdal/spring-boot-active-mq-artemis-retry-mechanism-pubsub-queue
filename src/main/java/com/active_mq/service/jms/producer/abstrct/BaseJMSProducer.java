@@ -3,7 +3,9 @@ package com.active_mq.service.jms.producer.abstrct;
 import com.active_mq.config.JMSProperties;
 import com.active_mq.core.model.BaseMessage;
 import com.active_mq.exception.MessageProcessingException;
+import com.active_mq.model.dto.SignalMessage;
 import com.active_mq.model.enums.ChannelType;
+import com.active_mq.model.enums.ConsumerType;
 import com.active_mq.model.enums.MessageStatus;
 import com.active_mq.service.MessageAuditService;
 import org.slf4j.Logger;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.Message;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.active_mq.model.enums.ChannelType.TOPIC;
 
@@ -46,8 +51,7 @@ public abstract class BaseJMSProducer {
         try {
             jmsTemplate.convertAndSend(destination, message);
             logSuccessAndAudit(message);
-            if (!destination.equals(jmsProperties.getDestination().deadLetterQueue()))
-                sendStartSignal(destination);
+            sendStartSignal(destination, message.getConsumerType());
         } catch (Exception e) {
             handleSendError(message, e);
         }
@@ -82,19 +86,24 @@ public abstract class BaseJMSProducer {
     }
 
     public <T extends BaseMessage> void sendDelayedMessage(final T message, final String destination, final long deliveryDelay) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         try {
             jmsTemplate.setDeliveryDelay(deliveryDelay);
             jmsTemplate.convertAndSend(destination, message);
             logSuccessAndAudit(message);
+
+            scheduler.schedule(() -> sendStartSignal(message.getDestination(), message.getConsumerType()), deliveryDelay, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             handleSendError(message, e);
         } finally {
+            scheduler.shutdown();
             jmsTemplate.setDeliveryDelay(0);
         }
     }
 
-    private void sendStartSignal(String specific) {
-        jmsTemplate.convertAndSend(jmsProperties.getDestination().startSignalQueue(), specific);
+    private void sendStartSignal(String specific, ConsumerType consumerType) {
+        final SignalMessage signal = new SignalMessage(specific, consumerType);
+        jmsTemplate.convertAndSend(jmsProperties.getDestination().startSignalQueue(), signal);
     }
 
     protected static <T extends BaseMessage> void validateMessage(T message) {
