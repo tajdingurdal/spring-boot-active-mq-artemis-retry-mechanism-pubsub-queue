@@ -37,7 +37,7 @@ public class RedeliveryCountManager {
      * @return the retry count as an AtomicInteger
      */
     public AtomicInteger getRedeliveryCountFromMap(String messageId) {
-        return retryCountMap.computeIfAbsent(messageId, k -> new AtomicInteger(0));
+        return retryCountMap.computeIfAbsent(messageId, k -> new AtomicInteger(1));
     }
 
     /**

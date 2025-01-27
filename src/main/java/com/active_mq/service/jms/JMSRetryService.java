@@ -46,10 +46,10 @@ public class JMSRetryService {
         String messageId = message.getMessageId();
         try {
             int countAsInt = redeliveryCountManager.getRedeliveryCountAsInt(messageId);
+            redeliveryCountManager.incrementRedeliveryCount(messageId);
             long delay = calculateRetryDelay(countAsInt);
             queueProducer.sendDelayedMessage(message, message.getDestination(), delay);
             auditService.updateStatusByMessageId(messageId, MessageStatus.RETRYING);
-            redeliveryCountManager.incrementRedeliveryCount(messageId);
             log.info("Scheduled retry for message {} with delay {} ms, attempt {}", messageId, delay, countAsInt);
         } catch (Exception e) {
             log.error("Failed to handle retry for message: {}", messageId, e);
@@ -58,19 +58,15 @@ public class JMSRetryService {
     }
 
     private long calculateRetryDelay(int retryCount) {
-/*
         int oneMinute = 60 * 1000;
 
-        if (retryCount == 0) {
+        if (retryCount == 1) {
             return oneMinute;
-        } else if (retryCount == 1) {
+        } else if (retryCount == 2) {
             return oneMinute * 2;
         } else {
             return oneMinute * 3;
         }
-
- */
-        return 500;
     }
 
     private boolean shouldRetryMessage(BaseMessage message, final int redeliveryCount) {
