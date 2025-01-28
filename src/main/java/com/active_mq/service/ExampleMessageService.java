@@ -70,7 +70,7 @@ public class ExampleMessageService implements BaseMessageService<ExampleMessage>
     public ExampleMessage generateMessage(String destination) {
         ExampleMessage message = new ExampleMessage();
         message.setMessageId(MessageUtils.createUniqueMessageId());
-        message.setSender(getType()+"1");
+        message.setSender(getType());
         message.setRecipient(getType());
         message.setDestination(destination);
         message.setPriority(MessagePriority.DEFAULT);
