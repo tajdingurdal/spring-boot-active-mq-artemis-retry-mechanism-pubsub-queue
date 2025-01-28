@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+/**
+ * A job that consumes messages from a JMS queue, processes them if not expired.
+ * This class is scheduled to run periodically and uses JMSTemplate for message receiving.
+ */
 @Component
 @EnableScheduling
 public class JmsHoldMessageConsumerJob {
@@ -28,6 +32,10 @@ public class JmsHoldMessageConsumerJob {
         this.jmsQueueConsumer = jmsQueueConsumer;
     }
 
+    /**
+     * Scheduled method that receives and processes messages from the JMS queue.
+     * The method runs periodically with a fixed rate and checks if messages are expired before processing.
+     */
     @Scheduled(initialDelay = 0, fixedRate = 3600000)
     public void receiveAllMessages() {
         log.info("Start receive all messages");

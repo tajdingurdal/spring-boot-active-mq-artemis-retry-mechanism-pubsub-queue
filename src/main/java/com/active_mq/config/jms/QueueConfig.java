@@ -10,6 +10,10 @@ import javax.jms.Session;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * Configuration class for setting up JMS listener container factories.
+ * It provides beans for creating container factories for different queue types.
+ */
 @Configuration
 public class QueueConfig {
 
@@ -22,21 +26,38 @@ public class QueueConfig {
         this.messageConverter = messageConverter;
     }
 
+    /**
+     * Creates and returns a JMS listener container factory for the default queue.
+     * @return DefaultJmsListenerContainerFactory for the queue.
+     */
     @Bean
     public DefaultJmsListenerContainerFactory containerFactory() {
         return createJmsListenerContainerFactory("queue");
     }
 
+    /**
+     * Creates and returns a JMS listener container factory for the dead-letter queue.
+     * @return DefaultJmsListenerContainerFactory for the DLQ.
+     */
     @Bean
     public DefaultJmsListenerContainerFactory dlqJmsListenerContainerFactory() {
         return createJmsListenerContainerFactory("queue-dlq");
     }
 
+    /**
+     * Creates and returns a JMS listener container factory for the expiry queue.
+     * @return DefaultJmsListenerContainerFactory for the expiry queue.
+     */
     @Bean
     public DefaultJmsListenerContainerFactory expiryJmsListenerContainerFactory() {
         return createJmsListenerContainerFactory("queue-expiry");
     }
 
+    /**
+     * Creates a JMS listener container factory with specific configuration for a given queue type.
+     * @param type The type of the queue (e.g., default, DLQ, expiry).
+     * @return Configured DefaultJmsListenerContainerFactory.
+     */
     public DefaultJmsListenerContainerFactory createJmsListenerContainerFactory(String type) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);

@@ -12,6 +12,10 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 
+/**
+ * Configuration class for setting up ActiveMQ connection and JMS template.
+ * It provides beans for creating the connection factory, JMS template, and message converter.
+ */
 @Configuration
 @EnableJms
 public class CommonActiveMQConfig {
@@ -24,6 +28,11 @@ public class CommonActiveMQConfig {
         this.jmsProperties = jmsProperties;
     }
 
+    /**
+     * Creates and returns an ActiveMQ connection factory.
+     * @return ActiveMQConnectionFactory configured with broker URL and credentials.
+     * @throws JMSException If an error occurs while creating the connection factory.
+     */
     @Bean
     public ActiveMQConnectionFactory connectionFactory() throws JMSException {
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
@@ -42,6 +51,11 @@ public class CommonActiveMQConfig {
 //        return pooledConnectionFactory;
 //    }
 
+    /**
+     * Creates and returns a JmsTemplate for sending and receiving messages.
+     * @return Configured JmsTemplate.
+     * @throws JMSException If an error occurs while creating the JMS template.
+     */
     @Bean
     public JmsTemplate jmsTemplate() throws JMSException {
         JmsTemplate template = new JmsTemplate();
@@ -52,6 +66,10 @@ public class CommonActiveMQConfig {
         return template;
     }
 
+    /**
+     * Creates and returns a message converter for JMS messages using Jackson.
+     * @return Configured MappingJackson2MessageConverter.
+     */
     @Bean
     public MessageConverter jacksonJmsMessageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();

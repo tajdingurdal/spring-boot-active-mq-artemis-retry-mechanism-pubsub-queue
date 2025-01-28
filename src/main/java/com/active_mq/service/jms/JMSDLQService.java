@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service class responsible for handling messages in the Dead Letter Queue (DLQ).
+ */
 @Service
 public class JMSDLQService implements BaseMessageService<DLQMessage> {
 
@@ -26,6 +29,11 @@ public class JMSDLQService implements BaseMessageService<DLQMessage> {
         this.producers = producers;
     }
 
+    /**
+     * Handles a message that has failed to process by sending it to the Dead Letter Queue (DLQ).
+     *
+     * @param message The message to be sent to the DLQ.
+     */
     public void handleDeadLetter(BaseMessage message) {
         ChannelType channelType = ChannelType.DLQ;
         message.setChannelType(channelType);
@@ -35,6 +43,12 @@ public class JMSDLQService implements BaseMessageService<DLQMessage> {
         doSend(message, channelType);
     }
 
+    /**
+     * Generates a new DLQMessage with default properties and the specified destination.
+     *
+     * @param destination The destination queue for the DLQ message.
+     * @return A new instance of DLQMessage.
+     */
     @Override
     public DLQMessage generateMessage(String destination) {
         DLQMessage message = new DLQMessage();

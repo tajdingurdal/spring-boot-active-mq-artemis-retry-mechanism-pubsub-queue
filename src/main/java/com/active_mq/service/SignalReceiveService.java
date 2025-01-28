@@ -16,6 +16,9 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
+/**
+ * Service class responsible for receiving and processing signal messages using JMS.
+ */
 @Service
 public class SignalReceiveService {
 
@@ -29,6 +32,13 @@ public class SignalReceiveService {
         this.jmsTemplate = jmsTemplate;
     }
 
+    /**
+     * Listens to the signal message queue, processes the signal, and delegates to the appropriate consumer.
+     *
+     * @param signal SignalMessage received from the queue.
+     * @param <T>    Type of BaseMessage.
+     * @throws MessageProcessingException if processing the message fails.
+     */
     @JmsListener(destination = "${spring.artemis.destination.start-signal-queue}",
             containerFactory = "containerFactory")
     @Async
@@ -40,13 +50,26 @@ public class SignalReceiveService {
         consumer.processMainMessage(mainMessage);
     }
 
+    /**
+     * Receives the main message from the specified destination queue.
+     *
+     * @param destination Queue name to receive the message from.
+     * @return The received BaseMessage or null if no message is available.
+     */
     public BaseMessage receiveMainMessage(String destination) {
         BaseMessage baseMessage = (BaseMessage) jmsTemplate.receiveAndConvert(destination);
         log.info("Receiving the main message.... {}", baseMessage);
         return baseMessage;
     }
 
-    protected BaseJMSConsumer getConsumer(ConsumerType consumerType) {
+    /**
+     * Retrieves the appropriate consumer for the given ConsumerType.
+     *
+     * @param consumerType The type of consumer to retrieve.
+     * @return The matching BaseJMSConsumer instance.
+     * @throws RuntimeException if no consumer is found for the given type.
+     */
+    public BaseJMSConsumer getConsumer(ConsumerType consumerType) {
         return consumers.stream()
                 .filter(consumer -> consumer.consumerType().equals(consumerType))
                 .findFirst()

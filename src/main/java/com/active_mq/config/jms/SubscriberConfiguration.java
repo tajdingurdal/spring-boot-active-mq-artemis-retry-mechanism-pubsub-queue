@@ -9,6 +9,10 @@ import org.springframework.jms.support.converter.MessageConverter;
 import java.util.Random;
 import java.util.UUID;
 
+/**
+ * Configuration class for setting up a JMS subscriber listener container factory.
+ * It provides a bean for creating a container factory for a topic subscriber.
+ */
 @Configuration
 public class SubscriberConfiguration {
 
@@ -20,6 +24,11 @@ public class SubscriberConfiguration {
         this.messageConverter = messageConverter;
     }
 
+    /**
+     * Creates and returns a JMS listener container factory for a topic subscriber.
+     * The factory is configured with durable subscription and pub-sub domain.
+     * @return Configured DefaultJmsListenerContainerFactory for the topic subscriber.
+     */
     @Bean
     public DefaultJmsListenerContainerFactory jmsSubscriberListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();

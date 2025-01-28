@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
+/**
+ * Service class responsible for managing retry logic for JMS message processing errors.
+ */
 @Service
 public class JMSRetryService {
 
@@ -32,6 +35,11 @@ public class JMSRetryService {
         this.redeliveryCountManager = redeliveryCountManager;
     }
 
+    /**
+     * Handles a processing error for the given message. Determines whether to retry the message or send it to the dead-letter queue (DLQ).
+     *
+     * @param baseMessage The message that failed to process.
+     */
     @Async
     public void handleProcessingError(final BaseMessage baseMessage) {
         String messageId = baseMessage.getMessageId();
@@ -44,6 +52,11 @@ public class JMSRetryService {
         }
     }
 
+    /**
+     * Handles the retry process for a message, including delay calculation and message re-sending.
+     *
+     * @param message The message to be retried.
+     */
     public void handleRetry(BaseMessage message) {
         String messageId = message.getMessageId();
         try {
@@ -59,6 +72,12 @@ public class JMSRetryService {
         }
     }
 
+    /**
+     * Calculates the delay for the next retry attempt based on the retry count.
+     *
+     * @param retryCount The number of previous retry attempts.
+     * @return The delay in milliseconds before the next retry.
+     */
     private long calculateRetryDelay(int retryCount) {
         int oneMinute = 60 * 1000;
 
@@ -71,6 +90,13 @@ public class JMSRetryService {
         }
     }
 
+    /**
+     * Determines if the message is eligible for retry based on redelivery count and expiration.
+     *
+     * @param message        The message being evaluated.
+     * @param redeliveryCount The number of times the message has already been retried.
+     * @return True if the message can be retried, false otherwise.
+     */
     private boolean shouldRetryMessage(BaseMessage message, final int redeliveryCount) {
 
         if (redeliveryCount >= jmsProperties.getRedelivery().maxAttempts()) {
