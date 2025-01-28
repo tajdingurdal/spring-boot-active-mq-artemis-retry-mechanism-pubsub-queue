@@ -56,11 +56,6 @@ A messaging system implementing queues, topics, and retry mechanisms using Sprin
        username: postgres
    ```
 
-5. **Run Application**
-   ```bash
-   mvn spring-boot:run
-   ```
-
 ## API Endpoints
 - Queue Message: `GET /queue-publish-message?msg={message}`
 - Topic Message: `GET /topic-publish-message?msg={message}`
